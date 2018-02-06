@@ -12,7 +12,11 @@ public class InMemoryConcerts implements Concerts {
 
     @Override
     public Concert publishedWithId(int id) throws UnknownConcert {
-        Concert concert = concerts.get(id - 1);
+        int index = id - 1;
+        if (index < 0 || index > concerts.size()) {
+            throw UnknownConcert.withId(id);
+        }
+        Concert concert = concerts.get(index);
         if (!concert.isPublished() || concert.isPast()) {
             throw UnknownConcert.withId(id);
         }
