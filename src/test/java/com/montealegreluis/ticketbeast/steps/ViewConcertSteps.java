@@ -1,16 +1,17 @@
 package com.montealegreluis.ticketbeast.steps;
 
+import com.montealegreluis.ticketbeast.builders.A;
 import com.montealegreluis.ticketbeast.concerts.Concert;
 import com.montealegreluis.ticketbeast.concerts.Concerts;
-import com.montealegreluis.ticketbeast.builders.A;
+import com.montealegreluis.ticketbeast.concerts.UnknownConcert;
 import com.montealegreluis.ticketbeast.fakes.InMemoryConcerts;
 import com.montealegreluis.ticketbeast.store.ViewPublishedConcert;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class ViewConcertSteps {
 
@@ -22,7 +23,9 @@ public class ViewConcertSteps {
 
     @When("^I try to view its details$")
     public void i_try_to_view_its_details() {
-        concert = action.view(1);
+        try {
+            concert = action.view(1);
+        } catch (UnknownConcert ignore) {}
     }
 
     @Then("^all the concert details are available to me$")
@@ -31,18 +34,20 @@ public class ViewConcertSteps {
     }
 
     @Given("^an unpublished concert$")
-    public void an_unpublished_concert() throws Throwable {
-        throw new PendingException();
+    public void an_unpublished_concert() {
+        existingConcert = A.unpublishedConcert();
+        concerts.add(existingConcert);
     }
 
     @Then("^I see no information$")
-    public void i_see_no_information() throws Throwable {
-        throw new PendingException();
+    public void i_see_no_information() {
+        assertNull(concert);
     }
 
     @Given("^a published concert with a date in the past$")
-    public void a_published_concert_with_a_date_in_the_past() throws Throwable {
-        throw new PendingException();
+    public void a_published_concert_with_a_date_in_the_past() {
+        existingConcert = A.pastConcert();
+        concerts.add(existingConcert);
     }
 
     private Concert concert;

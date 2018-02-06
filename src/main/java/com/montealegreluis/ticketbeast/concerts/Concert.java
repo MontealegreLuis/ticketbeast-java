@@ -1,5 +1,6 @@
 package com.montealegreluis.ticketbeast.concerts;
 
+import java.time.Instant;
 import java.util.Date;
 
 public class Concert {
@@ -14,6 +15,7 @@ public class Concert {
     private String state;
     private String zip;
     private String additionalInformation;
+    private Date publishedAt;
 
     private Concert(
         String title,
@@ -39,6 +41,23 @@ public class Concert {
         this.additionalInformation = additionalInformation;
     }
 
+    private Concert(
+        String title,
+        String subtitle,
+        Date date,
+        int ticketPrice,
+        String venue,
+        String venueAddress,
+        String city,
+        String state,
+        String zip,
+        String additionalInformation,
+        Date publishedAt
+    ) {
+        this(title, subtitle, date, ticketPrice, venue, venueAddress, city, state, zip, additionalInformation);
+        this.publishedAt = publishedAt;
+    }
+
     public static Concert published(
         String title,
         String subtitle,
@@ -51,6 +70,29 @@ public class Concert {
         String zip,
         String additionalInformation
     ) {
+        return new Concert(title, subtitle, date, ticketPrice, venue, venueAddress, city, state, zip, additionalInformation, Date.from(Instant.now()));
+    }
+
+    public static Concert unpublished(
+        String title,
+        String subtitle,
+        Date date,
+        int ticketPrice,
+        String venue,
+        String venueAddress,
+        String city,
+        String state,
+        String zip,
+        String additionalInformation
+    ) {
         return new Concert(title, subtitle, date, ticketPrice, venue, venueAddress, city, state, zip, additionalInformation);
+    }
+
+    public boolean isPublished() {
+        return publishedAt != null;
+    }
+
+    public boolean isPast() {
+        return date.before(new Date());
     }
 }
