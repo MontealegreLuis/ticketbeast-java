@@ -13,7 +13,7 @@ import cucumber.api.java.en.When;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class ViewConcertSteps {
+public class ViewPublishedConcertSteps {
 
     @Given("^a published concert$")
     public void a_published_concert() {
