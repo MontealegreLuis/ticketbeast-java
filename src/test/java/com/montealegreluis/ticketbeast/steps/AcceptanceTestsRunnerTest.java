@@ -10,5 +10,5 @@ import org.junit.runner.RunWith;
     glue = {"com.montealegreluis.ticketbeast.steps"},
     features = "features"
 )
-public class AcceptanceTestsRunner {
+public class AcceptanceTestsRunnerTest {
 }
