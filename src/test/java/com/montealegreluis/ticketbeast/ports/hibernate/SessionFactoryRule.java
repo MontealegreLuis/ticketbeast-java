@@ -3,6 +3,7 @@
  */
 package com.montealegreluis.ticketbeast.ports.hibernate;
 
+import com.montealegreluis.ticketbeast.concerts.Concert;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -42,8 +43,7 @@ public class SessionFactoryRule implements MethodRule {
             public void evaluate() throws Throwable {
             Configuration configuration = new Configuration();
             configuration.configure(new File("src/test/resources/hibernate.cfg.xml"));
-            configuration.addFile("src/main/resources/com/montealegreluis/ticketbeast/concerts/Concert.hbm.xml");
-
+            configuration.addAnnotatedClass(Concert.class);
             StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties())
                 .build()
