@@ -1,16 +1,13 @@
 package com.montealegreluis.ticketbeast.concerts;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
 import java.util.Date;
 
 @Entity
 @Table(name = "concerts")
 public class Concert {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
     private String subtitle;
@@ -23,6 +20,8 @@ public class Concert {
     private String zip;
     private String additionalInformation;
     private Date publishedAt;
+
+    protected Concert() {}
 
     private Concert(
         String title,
@@ -101,5 +100,9 @@ public class Concert {
 
     public boolean isPast() {
         return date.before(new Date());
+    }
+
+    public int id() {
+        return id;
     }
 }
