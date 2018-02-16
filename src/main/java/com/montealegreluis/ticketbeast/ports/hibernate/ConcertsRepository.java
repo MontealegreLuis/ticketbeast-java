@@ -20,9 +20,7 @@ public class ConcertsRepository implements Concerts {
 
         Concert concert = (Concert) query.uniqueResult();
 
-        if (concert == null) {
-            throw UnknownConcert.withId(id);
-        }
+        if (concert == null) throw UnknownConcert.withId(id);
 
         return concert;
     }
