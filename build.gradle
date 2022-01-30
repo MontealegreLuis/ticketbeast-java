@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.github.cdimascio:java-dotenv:3.0.0'
+    implementation 'mysql:mysql-connector-java:6.0.6'
+    implementation 'org.hibernate:hibernate-core:5.2.12.Final'
+    implementation 'javax.servlet:javax.servlet-api:3.1.0'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'com.github.mjeanroy:junit-servers-tomcat:0.6.1'
+    testImplementation 'com.squareup.okhttp3:okhttp:3.9.1'
+    testImplementation 'org.hsqldb:hsqldb:2.4.0'
+    testImplementation 'com.h2database:h2:1.4.196'
+    testImplementation 'info.cukes:cucumber-java:1.2.5'
+    testImplementation 'info.cukes:cucumber-junit:1.2.5'
+    testImplementation 'com.github.javafaker:javafaker:0.14'
+}
+
+group = 'com.montealegreluis'
+version = '1.0-SNAPSHOT'
+description = 'TicketBeast'
+java.sourceCompatibility = JavaVersion.VERSION_1_8
