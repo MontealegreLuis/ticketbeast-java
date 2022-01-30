@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InMemoryConcerts implements Concerts {
-  private List<Concert> concerts = new ArrayList<>();
+  private final List<Concert> concerts = new ArrayList<>();
 
   @Override
   public Concert publishedWithId(int id) throws UnknownConcert {

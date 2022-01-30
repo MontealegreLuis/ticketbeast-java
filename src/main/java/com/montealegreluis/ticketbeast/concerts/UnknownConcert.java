@@ -1,6 +1,6 @@
 package com.montealegreluis.ticketbeast.concerts;
 
-public class UnknownConcert extends Exception {
+public final class UnknownConcert extends Exception {
   private UnknownConcert(String message) {
     super(message);
   }

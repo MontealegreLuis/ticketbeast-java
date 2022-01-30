@@ -1,11 +1,11 @@
-package com.montealegreluis.ticketbeast.store;
+package com.montealegreluis.ticketbeast.concerts.actions;
 
 import com.montealegreluis.ticketbeast.concerts.Concert;
 import com.montealegreluis.ticketbeast.concerts.Concerts;
 import com.montealegreluis.ticketbeast.concerts.UnknownConcert;
 
-public class ViewPublishedConcert {
-  private Concerts concerts;
+public final class ViewPublishedConcert {
+  private final Concerts concerts;
 
   public ViewPublishedConcert(Concerts concerts) {
     this.concerts = concerts;

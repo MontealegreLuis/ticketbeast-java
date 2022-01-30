@@ -2,8 +2,11 @@ package com.montealegreluis.ticketbeast.concerts;
 
 import java.time.Instant;
 import java.util.Date;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-public class Concert {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class Concert {
   private int id;
   private String title;
   private String subtitle;
@@ -16,8 +19,6 @@ public class Concert {
   private String zip;
   private String additionalInformation;
   private Date publishedAt;
-
-  protected Concert() {}
 
   private Concert(
       String title,

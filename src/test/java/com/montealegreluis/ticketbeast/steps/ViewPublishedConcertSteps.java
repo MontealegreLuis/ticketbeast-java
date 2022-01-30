@@ -7,7 +7,7 @@ import com.montealegreluis.tickebeast.fakes.InMemoryConcerts;
 import com.montealegreluis.ticketbeast.concerts.Concert;
 import com.montealegreluis.ticketbeast.concerts.Concerts;
 import com.montealegreluis.ticketbeast.concerts.UnknownConcert;
-import com.montealegreluis.ticketbeast.store.ViewPublishedConcert;
+import com.montealegreluis.ticketbeast.concerts.actions.ViewPublishedConcert;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -51,6 +51,6 @@ public final class ViewPublishedConcertSteps {
 
   private Concert concert;
   private Concert existingConcert;
-  private Concerts concerts = new InMemoryConcerts();
-  private ViewPublishedConcert action = new ViewPublishedConcert(concerts);
+  private final Concerts concerts = new InMemoryConcerts();
+  private final ViewPublishedConcert action = new ViewPublishedConcert(concerts);
 }
