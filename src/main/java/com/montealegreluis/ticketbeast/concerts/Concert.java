@@ -1,13 +1,9 @@
 package com.montealegreluis.ticketbeast.concerts;
 
-import javax.persistence.*;
 import java.time.Instant;
 import java.util.Date;
 
-@Entity
-@Table(name = "concerts")
 public class Concert {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
     private String subtitle;
