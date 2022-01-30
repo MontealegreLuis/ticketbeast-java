@@ -1,14 +1,13 @@
 package com.montealegreluis.ticketbeast.concerts;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.sql.Date;
 
 import static org.junit.Assert.*;
 
-public class ConcertTest {
-
+final class ConcertTest {
     @Test
     public void it_knows_it_has_been_published() {
         Concert published = Concert.published(

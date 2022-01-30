@@ -6,12 +6,11 @@ import com.montealegreluis.ticketbeast.concerts.Concerts;
 import com.montealegreluis.ticketbeast.concerts.UnknownConcert;
 import com.montealegreluis.ticketbeast.fakes.InMemoryConcerts;
 import com.montealegreluis.ticketbeast.store.ViewPublishedConcert;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ViewPublishedConcertSteps {
 
