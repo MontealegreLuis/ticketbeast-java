@@ -1,4 +1,4 @@
-package com.montealegreluis.ticketbeast.fakes;
+package com.montealegreluis.tickebeast.fakes;
 
 import com.montealegreluis.ticketbeast.concerts.Concert;
 import com.montealegreluis.ticketbeast.concerts.Concerts;

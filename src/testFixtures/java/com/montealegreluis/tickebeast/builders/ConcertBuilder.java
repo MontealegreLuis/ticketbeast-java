@@ -1,4 +1,4 @@
-package com.montealegreluis.ticketbeast.builders;
+package com.montealegreluis.tickebeast.builders;
 
 import com.github.javafaker.Faker;
 import com.montealegreluis.ticketbeast.concerts.Concert;
@@ -7,10 +7,10 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.concurrent.TimeUnit;
 
-public class A {
-    private static Faker faker = new Faker();
+public final class ConcertBuilder {
+    private static final Faker faker = new Faker();
 
-    public static Concert publishedConcert() {
+    public static Concert aPublishedConcert() {
         return Concert.published(
             "The red chord",
             "with Animosity and the Lethargy",
@@ -25,7 +25,7 @@ public class A {
         );
     }
 
-    public static Concert unpublishedConcert() {
+    public static Concert anUnpublishedConcert() {
         return Concert.unpublished(
             "The red chord",
             "with Animosity and the Lethargy",
@@ -40,7 +40,7 @@ public class A {
         );
     }
 
-    public static Concert pastConcert() {
+    public static Concert aPastConcert() {
         return Concert.published(
             "The red chord",
             "with Animosity and the Lethargy",

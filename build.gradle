@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id 'java-test-fixtures'
 }
 
 group = 'com.montealegreluis'
@@ -15,7 +16,9 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testImplementation 'io.cucumber:cucumber-java:7.2.3'
     testImplementation 'io.cucumber:cucumber-junit:7.2.3'
-    testImplementation 'com.github.javafaker:javafaker:1.0.2'
+
+    testFixturesImplementation 'com.github.javafaker:javafaker:1.0.2'
+    testFixturesImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
 
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }

@@ -1,22 +1,21 @@
 package com.montealegreluis.ticketbeast.steps;
 
-import com.montealegreluis.ticketbeast.builders.A;
 import com.montealegreluis.ticketbeast.concerts.Concert;
 import com.montealegreluis.ticketbeast.concerts.Concerts;
 import com.montealegreluis.ticketbeast.concerts.UnknownConcert;
-import com.montealegreluis.ticketbeast.fakes.InMemoryConcerts;
+import com.montealegreluis.tickebeast.fakes.InMemoryConcerts;
 import com.montealegreluis.ticketbeast.store.ViewPublishedConcert;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import static com.montealegreluis.tickebeast.builders.ConcertBuilder.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ViewPublishedConcertSteps {
-
+public final class ViewPublishedConcertSteps {
     @Given("^a published concert$")
     public void a_published_concert() {
-        existingConcert = A.publishedConcert();
+        existingConcert = aPublishedConcert();
         concerts.add(existingConcert);
     }
 
@@ -34,7 +33,7 @@ public class ViewPublishedConcertSteps {
 
     @Given("^an unpublished concert$")
     public void an_unpublished_concert() {
-        existingConcert = A.unpublishedConcert();
+        existingConcert = anUnpublishedConcert();
         concerts.add(existingConcert);
     }
 
@@ -45,7 +44,7 @@ public class ViewPublishedConcertSteps {
 
     @Given("^a published concert with a date in the past$")
     public void a_published_concert_with_a_date_in_the_past() {
-        existingConcert = A.pastConcert();
+        existingConcert = aPastConcert();
         concerts.add(existingConcert);
     }
 
