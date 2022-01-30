@@ -1,4 +1,4 @@
-target
-build
 .gradle
+build
+node_modules
 .env

@@ -11,6 +11,8 @@ version = '1.0-SNAPSHOT'
 description = 'TicketBeast'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
+apply from: rootProject.file('hooks.gradle')
+
 repositories {
     mavenCentral()
 }
