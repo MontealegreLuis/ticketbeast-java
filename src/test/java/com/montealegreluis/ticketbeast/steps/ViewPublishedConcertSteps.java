@@ -1,6 +1,6 @@
 package com.montealegreluis.ticketbeast.steps;
 
-import static com.montealegreluis.tickebeast.builders.ConcertBuilder.*;
+import static com.montealegreluis.tickebeast.builders.concerts.ConcertBuilder.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.montealegreluis.tickebeast.fakes.InMemoryConcerts;

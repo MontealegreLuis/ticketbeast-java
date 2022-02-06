@@ -1,5 +1,6 @@
 package com.montealegreluis.ticketbeast.concerts;
 
+import com.montealegreluis.ticketbeast.concerts.venue.Venue;
 import java.time.Instant;
 import java.util.Date;
 import lombok.AccessLevel;
@@ -12,11 +13,7 @@ public final class Concert {
   private String subtitle;
   private Date date;
   private int ticketPrice;
-  private String venue;
-  private String venueAddress;
-  private String city;
-  private String state;
-  private String zip;
+  private Venue venue;
   private String additionalInformation;
   private Date publishedAt;
 
@@ -25,21 +22,13 @@ public final class Concert {
       String subtitle,
       Date date,
       int ticketPrice,
-      String venue,
-      String venueAddress,
-      String city,
-      String state,
-      String zip,
+      Venue venue,
       String additionalInformation) {
     this.title = title;
     this.subtitle = subtitle;
     this.date = date;
     this.ticketPrice = ticketPrice;
     this.venue = venue;
-    this.venueAddress = venueAddress;
-    this.city = city;
-    this.state = state;
-    this.zip = zip;
     this.additionalInformation = additionalInformation;
   }
 
@@ -48,24 +37,10 @@ public final class Concert {
       String subtitle,
       Date date,
       int ticketPrice,
-      String venue,
-      String venueAddress,
-      String city,
-      String state,
-      String zip,
+      Venue venue,
       String additionalInformation,
       Date publishedAt) {
-    this(
-        title,
-        subtitle,
-        date,
-        ticketPrice,
-        venue,
-        venueAddress,
-        city,
-        state,
-        zip,
-        additionalInformation);
+    this(title, subtitle, date, ticketPrice, venue, additionalInformation);
     this.publishedAt = publishedAt;
   }
 
@@ -74,24 +49,10 @@ public final class Concert {
       String subtitle,
       Date date,
       int ticketPrice,
-      String venue,
-      String venueAddress,
-      String city,
-      String state,
-      String zip,
+      Venue venue,
       String additionalInformation) {
     return new Concert(
-        title,
-        subtitle,
-        date,
-        ticketPrice,
-        venue,
-        venueAddress,
-        city,
-        state,
-        zip,
-        additionalInformation,
-        Date.from(Instant.now()));
+        title, subtitle, date, ticketPrice, venue, additionalInformation, Date.from(Instant.now()));
   }
 
   public static Concert unpublished(
@@ -99,23 +60,9 @@ public final class Concert {
       String subtitle,
       Date date,
       int ticketPrice,
-      String venue,
-      String venueAddress,
-      String city,
-      String state,
-      String zip,
+      Venue venue,
       String additionalInformation) {
-    return new Concert(
-        title,
-        subtitle,
-        date,
-        ticketPrice,
-        venue,
-        venueAddress,
-        city,
-        state,
-        zip,
-        additionalInformation);
+    return new Concert(title, subtitle, date, ticketPrice, venue, additionalInformation);
   }
 
   public boolean isPublished() {

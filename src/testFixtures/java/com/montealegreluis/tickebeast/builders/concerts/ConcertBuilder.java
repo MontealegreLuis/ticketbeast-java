@@ -1,4 +1,6 @@
-package com.montealegreluis.tickebeast.builders;
+package com.montealegreluis.tickebeast.builders.concerts;
+
+import static com.montealegreluis.tickebeast.builders.concerts.venue.VenueBuilder.aVenue;
 
 import com.github.javafaker.Faker;
 import com.montealegreluis.ticketbeast.concerts.Concert;
@@ -15,11 +17,7 @@ public final class ConcertBuilder {
         "with Animosity and the Lethargy",
         faker.date().future(10, TimeUnit.DAYS),
         3250,
-        "The Mosh Pit",
-        "123 Example lane",
-        "Laraville",
-        "ON",
-        "17196",
+        aVenue().build(),
         "For tickets call (555) 222-2222.");
   }
 
@@ -29,11 +27,7 @@ public final class ConcertBuilder {
         "with Animosity and the Lethargy",
         Date.valueOf(LocalDate.parse("2017-12-13")),
         3250,
-        "The Mosh Pit",
-        "123 Example lane",
-        "Laraville",
-        "ON",
-        "17196",
+        aVenue().build(),
         "For tickets call (555) 222-2222.");
   }
 
@@ -43,11 +37,7 @@ public final class ConcertBuilder {
         "with Animosity and the Lethargy",
         faker.date().past(10, TimeUnit.DAYS),
         3250,
-        "The Mosh Pit",
-        "123 Example lane",
-        "Laraville",
-        "ON",
-        "17196",
+        aVenue().build(),
         "For tickets call (555) 222-2222.");
   }
 }
