@@ -22,7 +22,7 @@ public final class ViewPublishedConcertSteps {
   @When("^I try to view its details$")
   public void i_try_to_view_its_details() {
     try {
-      concert = action.view(1);
+      concert = action.view(existingConcert.id());
     } catch (UnknownConcert ignore) {
     }
   }

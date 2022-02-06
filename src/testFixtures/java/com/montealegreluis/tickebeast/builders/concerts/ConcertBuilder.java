@@ -4,6 +4,7 @@ import static com.montealegreluis.tickebeast.builders.concerts.venue.VenueBuilde
 
 import com.github.javafaker.Faker;
 import com.montealegreluis.ticketbeast.concerts.Concert;
+import com.montealegreluis.ticketbeast.values.Uuid;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +14,7 @@ public final class ConcertBuilder {
 
   public static Concert aPublishedConcert() {
     return Concert.published(
+        Uuid.generate(),
         "The red chord",
         "with Animosity and the Lethargy",
         faker.date().future(10, TimeUnit.DAYS),
@@ -23,6 +25,7 @@ public final class ConcertBuilder {
 
   public static Concert anUnpublishedConcert() {
     return Concert.unpublished(
+        Uuid.generate(),
         "The red chord",
         "with Animosity and the Lethargy",
         Date.valueOf(LocalDate.parse("2017-12-13")),
@@ -33,6 +36,7 @@ public final class ConcertBuilder {
 
   public static Concert aPastConcert() {
     return Concert.published(
+        Uuid.generate(),
         "The red chord",
         "with Animosity and the Lethargy",
         faker.date().past(10, TimeUnit.DAYS),
