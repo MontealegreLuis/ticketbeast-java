@@ -1,9 +1,7 @@
 package com.montealegreluis.ticketbeast.concerts;
 
-import com.montealegreluis.ticketbeast.values.Uuid;
-
 public interface Concerts {
-  Concert publishedWithId(Uuid id) throws UnknownConcert;
+  Concert matching(PublishedConcertCriteria criteria) throws UnknownConcert;
 
   void add(Concert concert);
 }

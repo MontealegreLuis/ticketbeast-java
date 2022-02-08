@@ -82,11 +82,15 @@ public final class Concert {
     return publishedAt != null;
   }
 
-  public boolean isPast() {
-    return date.before(new Date());
-  }
-
   public Uuid id() {
     return id;
+  }
+
+  public boolean occursBefore(Date date) {
+    return this.date.before(date);
+  }
+
+  public Date date() {
+    return date;
   }
 }

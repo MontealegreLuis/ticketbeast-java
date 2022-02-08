@@ -2,8 +2,8 @@ package com.montealegreluis.tickebeast.fakes;
 
 import com.montealegreluis.ticketbeast.concerts.Concert;
 import com.montealegreluis.ticketbeast.concerts.Concerts;
+import com.montealegreluis.ticketbeast.concerts.PublishedConcertCriteria;
 import com.montealegreluis.ticketbeast.concerts.UnknownConcert;
-import com.montealegreluis.ticketbeast.values.Uuid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +11,15 @@ public final class InMemoryConcerts implements Concerts {
   private final List<Concert> concerts = new ArrayList<>();
 
   @Override
-  public Concert publishedWithId(Uuid id) throws UnknownConcert {
+  public Concert matching(PublishedConcertCriteria criteria) throws UnknownConcert {
     return concerts.stream()
-        .filter((concert) -> id.equals(concert.id()) && concert.isPublished() && !concert.isPast())
+        .filter(
+            (concert) ->
+                concert.id().equals(criteria.concertId())
+                    && concert.isPublished()
+                    && !concert.occursBefore(criteria.date()))
         .findFirst()
-        .orElseThrow(() -> UnknownConcert.withId(id));
+        .orElseThrow(() -> UnknownConcert.withId(criteria.concertId()));
   }
 
   @Override

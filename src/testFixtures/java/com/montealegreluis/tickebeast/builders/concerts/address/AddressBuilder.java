@@ -1,11 +1,10 @@
 package com.montealegreluis.tickebeast.builders.concerts.address;
 
-import com.github.javafaker.Faker;
+import com.montealegreluis.tickebeast.builders.Random;
 import com.montealegreluis.ticketbeast.concerts.address.*;
 
 public final class AddressBuilder {
-  public static final Faker faker = new Faker();
-  private String zipCode = faker.address().zipCode();
+  private String zipCode = Random.zipCode();
 
   public static AddressBuilder anAddress() {
     return new AddressBuilder();
@@ -17,12 +16,10 @@ public final class AddressBuilder {
   }
 
   public Address build() {
-    String streetAndNumber =
-        faker.address().streetAddress() + " " + faker.address().streetAddressNumber();
     return new Address(
-        new StreetAndNumber(streetAndNumber),
-        new City(faker.address().city()),
-        new State(faker.address().state()),
+        new StreetAndNumber(Random.streetAndNumber()),
+        new City(Random.city()),
+        new State(Random.state()),
         new ZipCode(zipCode));
   }
 }
