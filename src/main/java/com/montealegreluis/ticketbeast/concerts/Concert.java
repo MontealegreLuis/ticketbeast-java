@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Concert implements Response {
   private Uuid id;
-  private String title;
-  private String subtitle;
+  private Title title;
+  private Subtitle subtitle;
   private Date date;
   private int ticketPrice;
   private Venue venue;
@@ -21,8 +21,8 @@ public final class Concert implements Response {
 
   public static Concert published(
       Uuid id,
-      String title,
-      String subtitle,
+      Title title,
+      Subtitle subtitle,
       Date date,
       int ticketPrice,
       Venue venue,
@@ -40,8 +40,8 @@ public final class Concert implements Response {
 
   public static Concert unpublished(
       Uuid id,
-      String title,
-      String subtitle,
+      Title title,
+      Subtitle subtitle,
       Date date,
       int ticketPrice,
       Venue venue,
@@ -51,8 +51,8 @@ public final class Concert implements Response {
 
   private Concert(
       Uuid id,
-      String title,
-      String subtitle,
+      Title title,
+      Subtitle subtitle,
       Date date,
       int ticketPrice,
       Venue venue,
@@ -64,8 +64,8 @@ public final class Concert implements Response {
 
   private Concert(
       Uuid id,
-      String title,
-      String subtitle,
+      Title title,
+      Subtitle subtitle,
       Date date,
       int ticketPrice,
       Venue venue,
