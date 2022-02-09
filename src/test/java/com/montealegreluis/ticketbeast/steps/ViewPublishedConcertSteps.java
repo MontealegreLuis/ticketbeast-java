@@ -28,7 +28,7 @@ public final class ViewPublishedConcertSteps {
   @When("^I try to view its details$")
   public void i_try_to_view_its_details() {
     try {
-      concert = action.view(new ViewPublishedConcertInput(existingConcert.id().value()));
+      concert = action.execute(new ViewPublishedConcertInput(existingConcert.id().value()));
     } catch (UnknownConcert ignore) {
     }
   }

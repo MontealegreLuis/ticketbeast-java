@@ -1,5 +1,6 @@
 package com.montealegreluis.ticketbeast.concerts;
 
+import com.montealegreluis.servicebuses.querybus.Response;
 import com.montealegreluis.ticketbeast.concerts.venue.Venue;
 import com.montealegreluis.ticketbeast.values.Uuid;
 import java.time.Instant;
@@ -8,7 +9,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class Concert {
+public final class Concert implements Response {
   private Uuid id;
   private String title;
   private String subtitle;

@@ -22,7 +22,7 @@ final class ViewPublishedConcertActionTest {
     concerts.add(existingConcert);
     var input = new ViewPublishedConcertInput(concertId);
 
-    var publishedConcert = action.view(input);
+    var publishedConcert = action.execute(input);
 
     assertEquals(existingConcert, publishedConcert);
   }
@@ -33,7 +33,7 @@ final class ViewPublishedConcertActionTest {
     var input = new ViewPublishedConcertInput(concertId);
     concerts.add(existingConcert);
 
-    assertThrows(UnknownConcert.class, () -> action.view(input));
+    assertThrows(UnknownConcert.class, () -> action.execute(input));
   }
 
   @Test
@@ -44,7 +44,7 @@ final class ViewPublishedConcertActionTest {
     concerts.add(existingConcert);
     var input = new ViewPublishedConcertInput(concertId);
 
-    assertThrows(UnknownConcert.class, () -> action.view(input));
+    assertThrows(UnknownConcert.class, () -> action.execute(input));
   }
 
   @BeforeEach

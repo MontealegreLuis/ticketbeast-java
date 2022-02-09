@@ -1,5 +1,6 @@
 package com.montealegreluis.ticketbeast.concerts.actions;
 
+import com.montealegreluis.servicebuses.querybus.QueryHandler;
 import com.montealegreluis.ticketbeast.concerts.Concert;
 import com.montealegreluis.ticketbeast.concerts.Concerts;
 import com.montealegreluis.ticketbeast.concerts.PublishedConcertCriteria;
@@ -7,7 +8,8 @@ import com.montealegreluis.ticketbeast.concerts.UnknownConcert;
 import java.time.Clock;
 import java.util.Date;
 
-public final class ViewPublishedConcertAction {
+public final class ViewPublishedConcertAction
+    implements QueryHandler<ViewPublishedConcertInput, Concert> {
   private final Concerts concerts;
   private final Clock clock;
 
@@ -16,7 +18,7 @@ public final class ViewPublishedConcertAction {
     this.clock = clock;
   }
 
-  public Concert view(ViewPublishedConcertInput input) throws UnknownConcert {
+  public Concert execute(ViewPublishedConcertInput input) throws UnknownConcert {
     final var publishedConcertCriteria =
         new PublishedConcertCriteria(input.concertId(), Date.from(clock.instant()));
 

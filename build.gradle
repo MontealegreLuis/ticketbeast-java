@@ -21,10 +21,18 @@ repositories {
             password = project.findProperty("gpr.token") ?: System.getenv("TOKEN")
         }
     }
+    maven {
+        url = uri("https://maven.pkg.github.com/montealegreluis/service-buses")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+            password = project.findProperty("gpr.token") ?: System.getenv("TOKEN")
+        }
+    }
 }
 
 dependencies {
     implementation 'com.montealegreluis:assert:1.1.0'
+    implementation 'com.montealegreluis:service-buses:6.0.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
@@ -38,6 +46,7 @@ dependencies {
 
     testFixturesImplementation 'com.github.javafaker:javafaker:1.0.2'
     testFixturesImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testFixturesImplementation testFixtures('com.montealegreluis:service-buses:6.0.0')
 
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
