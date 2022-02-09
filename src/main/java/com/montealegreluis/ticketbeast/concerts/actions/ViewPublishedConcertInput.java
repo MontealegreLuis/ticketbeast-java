@@ -1,8 +1,6 @@
 package com.montealegreluis.ticketbeast.concerts.actions;
 
-import com.montealegreluis.ticketbeast.concerts.PublishedConcertCriteria;
 import com.montealegreluis.ticketbeast.values.Uuid;
-import java.util.Date;
 
 public final class ViewPublishedConcertInput {
   private final Uuid concertId;
@@ -11,7 +9,7 @@ public final class ViewPublishedConcertInput {
     this.concertId = Uuid.withValue(concertId);
   }
 
-  public PublishedConcertCriteria criteria(Date now) {
-    return new PublishedConcertCriteria(concertId, now);
+  public Uuid concertId() {
+    return concertId;
   }
 }

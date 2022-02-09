@@ -5,18 +5,18 @@ import java.util.Date;
 
 public final class PublishedConcertCriteria {
   private final Uuid concertId;
-  private final Date date;
+  private final Date currentDate;
 
-  public PublishedConcertCriteria(Uuid concertId, Date date) {
+  public PublishedConcertCriteria(Uuid concertId, Date currentDate) {
     this.concertId = concertId;
-    this.date = date;
+    this.currentDate = currentDate;
   }
 
   public Uuid concertId() {
     return concertId;
   }
 
-  public Date date() {
-    return date;
+  public Date currentDate() {
+    return currentDate;
   }
 }

@@ -17,7 +17,7 @@ public final class InMemoryConcerts implements Concerts {
             (concert) ->
                 concert.id().equals(criteria.concertId())
                     && concert.isPublished()
-                    && !concert.occursBefore(criteria.date()))
+                    && concert.occursAfter(criteria.currentDate()))
         .findFirst()
         .orElseThrow(() -> UnknownConcert.withId(criteria.concertId()));
   }

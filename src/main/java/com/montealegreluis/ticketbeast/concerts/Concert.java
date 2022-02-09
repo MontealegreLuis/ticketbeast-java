@@ -86,8 +86,8 @@ public final class Concert {
     return id;
   }
 
-  public boolean occursBefore(Date date) {
-    return this.date.before(date);
+  public boolean occursAfter(Date date) {
+    return this.date.after(date);
   }
 
   public Date date() {
