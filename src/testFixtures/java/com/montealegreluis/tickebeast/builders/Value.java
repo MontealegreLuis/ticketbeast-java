@@ -8,10 +8,6 @@ import java.util.concurrent.TimeUnit;
 public final class Value {
   private static final Faker faker = new Faker();
 
-  public static Date dateInPastDays(int atMostDays) {
-    return faker.date().past(atMostDays, TimeUnit.DAYS);
-  }
-
   public static Date dateInFutureDays(int atMostDays) {
     return faker.date().future(atMostDays, TimeUnit.DAYS);
   }

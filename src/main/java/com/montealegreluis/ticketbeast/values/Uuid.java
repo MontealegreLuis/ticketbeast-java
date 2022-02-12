@@ -1,10 +1,11 @@
 package com.montealegreluis.ticketbeast.values;
 
+import java.io.Serializable;
 import java.util.UUID;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
-public final class Uuid implements StringValueObject {
+public final class Uuid implements StringValueObject, Serializable {
   private final String identifier;
 
   public static Uuid generate() {

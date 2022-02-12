@@ -1,22 +1,38 @@
 package com.montealegreluis.ticketbeast.concerts;
 
 import com.montealegreluis.servicebuses.querybus.Response;
+import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.AdditionalInformationConverter;
+import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.SubtitleConverter;
+import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.TitleConverter;
 import com.montealegreluis.ticketbeast.concerts.venue.Venue;
 import com.montealegreluis.ticketbeast.values.Uuid;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Objects;
+import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Entity
+@Access(AccessType.FIELD)
+@Table(name = "concerts")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class Concert implements Response {
-  private Uuid id;
+  @Id private Uuid id;
+
+  @Convert(converter = TitleConverter.class)
   private Title title;
+
+  @Convert(converter = SubtitleConverter.class)
   private Subtitle subtitle;
+
   private Date date;
-  private Money ticketPrice;
-  private Venue venue;
+  @Embedded private Money ticketPrice;
+  @Embedded private Venue venue;
+
+  @Convert(converter = AdditionalInformationConverter.class)
   private AdditionalInformation additionalInformation;
+
   private Date publishedAt;
 
   public static Concert published(
@@ -93,5 +109,18 @@ public final class Concert implements Response {
 
   public Date date() {
     return date;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || this.getClass() != o.getClass()) return false;
+    Concert concert = (Concert) o;
+    return id != null && Objects.equals(id, concert.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
   }
 }

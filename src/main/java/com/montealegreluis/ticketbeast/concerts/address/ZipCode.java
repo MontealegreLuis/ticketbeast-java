@@ -2,7 +2,9 @@ package com.montealegreluis.ticketbeast.concerts.address;
 
 import com.montealegreluis.assertions.Assert;
 import com.montealegreluis.ticketbeast.values.StringValueObject;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode
 public final class ZipCode implements StringValueObject {
   private final String zipCode;
 
