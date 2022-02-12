@@ -31,7 +31,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.montealegreluis:assert:1.1.0'
+    implementation 'com.montealegreluis:assert:1.3.0'
     implementation 'com.montealegreluis:service-buses:6.0.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.22'

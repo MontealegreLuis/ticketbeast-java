@@ -14,7 +14,7 @@ public final class Concert implements Response {
   private Title title;
   private Subtitle subtitle;
   private Date date;
-  private int ticketPrice;
+  private Money ticketPrice;
   private Venue venue;
   private String additionalInformation;
   private Date publishedAt;
@@ -24,7 +24,7 @@ public final class Concert implements Response {
       Title title,
       Subtitle subtitle,
       Date date,
-      int ticketPrice,
+      Money ticketPrice,
       Venue venue,
       String additionalInformation) {
     return new Concert(
@@ -43,7 +43,7 @@ public final class Concert implements Response {
       Title title,
       Subtitle subtitle,
       Date date,
-      int ticketPrice,
+      Money ticketPrice,
       Venue venue,
       String additionalInformation) {
     return new Concert(id, title, subtitle, date, ticketPrice, venue, additionalInformation);
@@ -54,7 +54,7 @@ public final class Concert implements Response {
       Title title,
       Subtitle subtitle,
       Date date,
-      int ticketPrice,
+      Money ticketPrice,
       Venue venue,
       String additionalInformation,
       Date publishedAt) {
@@ -67,7 +67,7 @@ public final class Concert implements Response {
       Title title,
       Subtitle subtitle,
       Date date,
-      int ticketPrice,
+      Money ticketPrice,
       Venue venue,
       String additionalInformation) {
     this.id = id;
