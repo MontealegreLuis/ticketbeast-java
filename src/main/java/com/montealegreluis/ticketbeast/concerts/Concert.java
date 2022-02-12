@@ -18,7 +18,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "concerts")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class Concert implements Response {
-  @Id private Uuid id;
+  @Id
+  @EmbeddedId
+  @AttributeOverrides({
+    @AttributeOverride(name = "identifier", column = @Column(name = "concert_id"))
+  })
+  private Uuid id;
 
   @Convert(converter = TitleConverter.class)
   private Title title;
@@ -26,8 +31,16 @@ public final class Concert implements Response {
   @Convert(converter = SubtitleConverter.class)
   private Subtitle subtitle;
 
+  @Column(name = "concert_date")
   private Date date;
-  @Embedded private Money ticketPrice;
+
+  @Embedded
+  @AttributeOverrides({
+    @AttributeOverride(name = "amount", column = @Column(name = "ticket_price_amount")),
+    @AttributeOverride(name = "currency", column = @Column(name = "ticket_price_currency"))
+  })
+  private Money ticketPrice;
+
   @Embedded private Venue venue;
 
   @Convert(converter = AdditionalInformationConverter.class)

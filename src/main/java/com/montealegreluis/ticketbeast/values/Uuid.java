@@ -3,11 +3,16 @@ package com.montealegreluis.ticketbeast.values;
 import com.montealegreluis.assertions.Assert;
 import java.io.Serializable;
 import java.util.UUID;
+import javax.persistence.Embeddable;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+@Embeddable
 @EqualsAndHashCode
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class Uuid implements StringValueObject, Serializable {
-  private final String identifier;
+  private String identifier;
 
   public static Uuid generate() {
     return new Uuid(UUID.randomUUID().toString());
