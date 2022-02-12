@@ -2,6 +2,7 @@ package com.montealegreluis.ticketbeast.values;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.montealegreluis.assertions.IllegalArgumentException;
 import org.junit.jupiter.api.Test;
 
 final class UuidTest {

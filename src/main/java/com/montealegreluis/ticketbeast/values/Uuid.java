@@ -1,5 +1,6 @@
 package com.montealegreluis.ticketbeast.values;
 
+import com.montealegreluis.assertions.Assert;
 import java.io.Serializable;
 import java.util.UUID;
 import lombok.EqualsAndHashCode;
@@ -13,10 +14,11 @@ public final class Uuid implements StringValueObject, Serializable {
   }
 
   public static Uuid withValue(String identifier) {
-    return new Uuid(UUID.fromString(identifier).toString());
+    return new Uuid(identifier);
   }
 
   private Uuid(String identifier) {
+    Assert.uuid(identifier);
     this.identifier = identifier;
   }
 

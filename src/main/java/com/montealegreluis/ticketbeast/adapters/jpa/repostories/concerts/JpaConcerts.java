@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JpaConcerts extends JpaRepository<Concert, Uuid> {
-  Optional<Concert> findByIdAndDateAfterAndPublishedAtNotNull(Uuid concertId, Date now);
+  Optional<Concert> findByIdAndDateAfterAndPublishedAtNotNull(Uuid concertId, Date currentDate);
 }
