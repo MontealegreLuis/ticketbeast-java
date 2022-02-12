@@ -3,6 +3,7 @@ package com.montealegreluis.tickebeast.builders.concerts;
 import static com.montealegreluis.tickebeast.builders.concerts.venue.VenueBuilder.aVenue;
 
 import com.montealegreluis.tickebeast.builders.Value;
+import com.montealegreluis.ticketbeast.concerts.AdditionalInformation;
 import com.montealegreluis.ticketbeast.concerts.Concert;
 import com.montealegreluis.ticketbeast.concerts.Money;
 import com.montealegreluis.ticketbeast.concerts.Subtitle;
@@ -20,7 +21,8 @@ public final class ConcertBuilder {
   private Date concertDate = Value.dateInFutureDays(10);
   private final Money ticketPrice = Money.of(3250, "USD");
   private final Venue venue = aVenue().build();
-  private final String additionalInformation = "For tickets call (555) 222-2222.";
+  private final AdditionalInformation additionalInformation =
+      new AdditionalInformation("For tickets call (555) 222-2222.");
 
   public static ConcertBuilder aConcert() {
     return new ConcertBuilder();

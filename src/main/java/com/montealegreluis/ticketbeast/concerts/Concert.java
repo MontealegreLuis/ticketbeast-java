@@ -16,7 +16,7 @@ public final class Concert implements Response {
   private Date date;
   private Money ticketPrice;
   private Venue venue;
-  private String additionalInformation;
+  private AdditionalInformation additionalInformation;
   private Date publishedAt;
 
   public static Concert published(
@@ -26,7 +26,7 @@ public final class Concert implements Response {
       Date date,
       Money ticketPrice,
       Venue venue,
-      String additionalInformation) {
+      AdditionalInformation additionalInformation) {
     return new Concert(
         id,
         title,
@@ -45,7 +45,7 @@ public final class Concert implements Response {
       Date date,
       Money ticketPrice,
       Venue venue,
-      String additionalInformation) {
+      AdditionalInformation additionalInformation) {
     return new Concert(id, title, subtitle, date, ticketPrice, venue, additionalInformation);
   }
 
@@ -56,7 +56,7 @@ public final class Concert implements Response {
       Date date,
       Money ticketPrice,
       Venue venue,
-      String additionalInformation,
+      AdditionalInformation additionalInformation,
       Date publishedAt) {
     this(id, title, subtitle, date, ticketPrice, venue, additionalInformation);
     this.publishedAt = publishedAt;
@@ -69,7 +69,7 @@ public final class Concert implements Response {
       Date date,
       Money ticketPrice,
       Venue venue,
-      String additionalInformation) {
+      AdditionalInformation additionalInformation) {
     this.id = id;
     this.title = title;
     this.subtitle = subtitle;
