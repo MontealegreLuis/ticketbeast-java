@@ -1,5 +1,6 @@
 package com.montealegreluis.ticketbeast.concerts.actions;
 
+import com.montealegreluis.servicebuses.Query;
 import com.montealegreluis.servicebuses.querybus.QueryHandler;
 import com.montealegreluis.ticketbeast.concerts.Concert;
 import com.montealegreluis.ticketbeast.concerts.Concerts;
@@ -8,6 +9,7 @@ import com.montealegreluis.ticketbeast.concerts.UnknownConcert;
 import java.time.Clock;
 import java.util.Date;
 
+@Query
 public final class ViewPublishedConcertAction
     implements QueryHandler<ViewPublishedConcertInput, Concert> {
   private final Concerts concerts;
