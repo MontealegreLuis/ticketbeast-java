@@ -21,7 +21,7 @@ public final class Concert implements Response {
   @Id
   @EmbeddedId
   @AttributeOverrides({
-    @AttributeOverride(name = "identifier", column = @Column(name = "concert_id"))
+    @AttributeOverride(name = "identifier", column = @Column(name = "concert_id", length = 36))
   })
   private Uuid id;
 
