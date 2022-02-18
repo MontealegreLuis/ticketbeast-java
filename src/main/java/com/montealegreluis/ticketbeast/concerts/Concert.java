@@ -11,11 +11,13 @@ import java.util.Date;
 import java.util.Objects;
 import javax.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Entity
-@Access(AccessType.FIELD)
 @Table(name = "concerts")
+@Access(AccessType.FIELD)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class Concert implements Response {
   @Id

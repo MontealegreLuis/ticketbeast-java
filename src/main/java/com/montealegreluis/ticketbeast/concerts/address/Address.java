@@ -10,8 +10,10 @@ import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Embeddable
 @Access(AccessType.FIELD)
 @EqualsAndHashCode

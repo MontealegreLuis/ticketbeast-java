@@ -112,6 +112,6 @@ pitest {
     outputFormats = ['HTML']
     timestampedReports = false
     junit5PluginVersion = '0.15'
-    coverageThreshold = 97
+    coverageThreshold = 93
     mutationThreshold = 94
 }
