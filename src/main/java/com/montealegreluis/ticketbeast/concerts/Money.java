@@ -5,10 +5,12 @@ import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.Currency
 import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Embeddable
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class Money {
   private long amount;
 
@@ -17,14 +19,6 @@ public final class Money {
 
   public static Money of(long cents, String currency) {
     return new Money(cents, new CurrencyCode(currency));
-  }
-
-  public long amount() {
-    return amount;
-  }
-
-  public String currencyCode() {
-    return currency.value();
   }
 
   private Money(long amount, CurrencyCode currency) {

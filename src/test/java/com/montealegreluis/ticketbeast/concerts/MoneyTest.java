@@ -24,7 +24,7 @@ final class MoneyTest {
 
     var money = Money.of(amount, dollars);
 
-    assertEquals(amount, money.amount());
-    assertEquals(dollars, money.currencyCode());
+    assertEquals(amount, money.getAmount());
+    assertEquals(dollars, money.getCurrency().value());
   }
 }
