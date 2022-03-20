@@ -27,4 +27,21 @@ final class MoneyTest {
     assertEquals(amount, money.getAmount());
     assertEquals(dollars, money.getCurrency().value());
   }
+
+  @Test
+  void it_can_be_multiplied() {
+    var twoDollars = Money.of(200, "USD");
+
+    var fourDollars = twoDollars.multiply(2);
+
+    assertEquals(Money.of(400, "USD"), fourDollars);
+  }
+
+  @Test
+  void it_prevents_adding_2_amounts_with_different_currency() {
+    var twoDollars = Money.of(200, "USD");
+    var twoPesos = Money.of(200, "MXN");
+
+    assertThrows(IllegalArgumentException.class, () -> twoPesos.add(twoDollars));
+  }
 }

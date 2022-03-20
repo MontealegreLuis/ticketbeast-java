@@ -2,7 +2,9 @@ package com.montealegreluis.ticketbeast.concerts;
 
 import com.montealegreluis.ticketbeast.values.Uuid;
 import java.util.Date;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode
 public final class PublishedConcertCriteria {
   private final Uuid concertId;
   private final Date currentDate;

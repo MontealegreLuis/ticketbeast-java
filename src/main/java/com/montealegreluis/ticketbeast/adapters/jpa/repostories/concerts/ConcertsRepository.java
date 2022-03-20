@@ -22,7 +22,7 @@ public class ConcertsRepository implements Concerts {
   }
 
   @Override
-  public void add(Concert concert) {
+  public void save(Concert concert) {
     concerts.save(concert);
   }
 }

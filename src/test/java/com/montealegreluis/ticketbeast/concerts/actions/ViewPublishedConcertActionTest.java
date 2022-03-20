@@ -3,7 +3,7 @@ package com.montealegreluis.ticketbeast.concerts.actions;
 import static com.montealegreluis.tickebeast.builders.concerts.ConcertBuilder.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.montealegreluis.tickebeast.fakes.InMemoryConcerts;
+import com.montealegreluis.tickebeast.fakes.concerts.InMemoryConcerts;
 import com.montealegreluis.ticketbeast.concerts.UnknownConcert;
 import com.montealegreluis.ticketbeast.values.Uuid;
 import java.time.Clock;
@@ -19,7 +19,7 @@ final class ViewPublishedConcertActionTest {
     var inTwoDays = now.plus(2, ChronoUnit.DAYS);
     var existingConcert =
         aConcert().withId(Uuid.withValue(concertId)).published().onDate(inTwoDays).build();
-    concerts.add(existingConcert);
+    concerts.save(existingConcert);
     var input = new ViewPublishedConcertInput(concertId);
 
     var publishedConcert = action.execute(input);
@@ -31,7 +31,7 @@ final class ViewPublishedConcertActionTest {
   void it_fails_to_find_an_unpublished_concert() {
     var existingConcert = aConcert().withId(Uuid.withValue(concertId)).build();
     var input = new ViewPublishedConcertInput(concertId);
-    concerts.add(existingConcert);
+    concerts.save(existingConcert);
 
     assertThrows(UnknownConcert.class, () -> action.execute(input));
   }
@@ -41,7 +41,7 @@ final class ViewPublishedConcertActionTest {
     var twoDaysAgo = now.minus(2, ChronoUnit.DAYS);
     var existingConcert =
         aConcert().withId(Uuid.withValue(concertId)).published().onDate(twoDaysAgo).build();
-    concerts.add(existingConcert);
+    concerts.save(existingConcert);
     var input = new ViewPublishedConcertInput(concertId);
 
     assertThrows(UnknownConcert.class, () -> action.execute(input));

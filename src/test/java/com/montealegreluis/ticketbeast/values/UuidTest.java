@@ -21,4 +21,13 @@ final class UuidTest {
 
     assertThrows(IllegalArgumentException.class, () -> Uuid.withValue(invalidUUID));
   }
+
+  @Test
+  void it_knows_its_current_value() {
+    var uuid = "e3da4d44-4ed1-40c1-ad02-61d32b77a3eb";
+    var id = Uuid.withValue(uuid);
+
+    assertEquals(uuid, id.value());
+    assertEquals(uuid, id.toString());
+  }
 }

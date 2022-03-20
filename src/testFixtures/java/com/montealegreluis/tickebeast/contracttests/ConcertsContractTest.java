@@ -23,7 +23,8 @@ public abstract class ConcertsContractTest {
   public void it_does_not_find_an_unpublished_concert() {
     var concerts = concerts();
     var unpublishedConcert = aConcert().build();
-    concerts.add(unpublishedConcert);
+    unpublishedConcert.orderTickets(Value.id(), Value.ticketQuantity(), Value.email());
+    concerts.save(unpublishedConcert);
     var criteria =
         new PublishedConcertCriteria(unpublishedConcert.id(), Value.dateInFutureDays(10));
 
@@ -34,7 +35,7 @@ public abstract class ConcertsContractTest {
   public void it_does_not_find_a_concert_from_the_past() {
     var concerts = concerts();
     var pastConcert = aConcert().build();
-    concerts.add(pastConcert);
+    concerts.save(pastConcert);
     var criteria = new PublishedConcertCriteria(pastConcert.id(), pastConcert.date());
 
     assertThrows(UnknownConcert.class, () -> concerts.matching(criteria));
@@ -44,7 +45,7 @@ public abstract class ConcertsContractTest {
   public void it_finds_an_existing_concert() throws UnknownConcert {
     var concerts = concerts();
     var concert = aConcert().published().build();
-    concerts.add(concert);
+    concerts.save(concert);
     var twoDaysBefore = Date.from(concert.date().toInstant().minus(2, ChronoUnit.DAYS));
     var criteria = new PublishedConcertCriteria(concert.id(), twoDaysBefore);
 

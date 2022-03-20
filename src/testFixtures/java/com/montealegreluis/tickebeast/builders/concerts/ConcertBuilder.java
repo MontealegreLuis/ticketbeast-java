@@ -19,7 +19,7 @@ public final class ConcertBuilder {
   private final Title title = new Title("The red chord");
   private final Subtitle subtitle = new Subtitle("with Animosity and the Lethargy");
   private Date concertDate = Value.dateInFutureDays(10);
-  private final Money ticketPrice = Money.of(3250, "USD");
+  private Money ticketPrice = Money.of(3250, "USD");
   private final Venue venue = aVenue().build();
   private final AdditionalInformation additionalInformation =
       new AdditionalInformation("For tickets call (555) 222-2222.");
@@ -40,6 +40,11 @@ public final class ConcertBuilder {
 
   public ConcertBuilder withId(Uuid id) {
     concertId = id;
+    return this;
+  }
+
+  public ConcertBuilder withTicketPrice(Money price) {
+    this.ticketPrice = price;
     return this;
   }
 

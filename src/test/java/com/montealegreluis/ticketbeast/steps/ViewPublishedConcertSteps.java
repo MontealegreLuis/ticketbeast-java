@@ -3,7 +3,7 @@ package com.montealegreluis.ticketbeast.steps;
 import static com.montealegreluis.tickebeast.builders.concerts.ConcertBuilder.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.montealegreluis.tickebeast.fakes.InMemoryConcerts;
+import com.montealegreluis.tickebeast.fakes.concerts.InMemoryConcerts;
 import com.montealegreluis.ticketbeast.concerts.Concert;
 import com.montealegreluis.ticketbeast.concerts.Concerts;
 import com.montealegreluis.ticketbeast.concerts.UnknownConcert;
@@ -22,7 +22,7 @@ public final class ViewPublishedConcertSteps {
   public void a_published_concert() {
     var inTwoDays = now.plus(2, ChronoUnit.DAYS);
     existingConcert = aConcert().published().onDate(inTwoDays).build();
-    concerts.add(existingConcert);
+    concerts.save(existingConcert);
   }
 
   @When("^I try to view its details$")
@@ -41,7 +41,7 @@ public final class ViewPublishedConcertSteps {
   @Given("^an unpublished concert$")
   public void an_unpublished_concert() {
     existingConcert = aConcert().build();
-    concerts.add(existingConcert);
+    concerts.save(existingConcert);
   }
 
   @Then("^I see no information$")
@@ -53,7 +53,7 @@ public final class ViewPublishedConcertSteps {
   public void a_published_concert_with_a_date_in_the_past() {
     var twoDaysAgo = now.minus(2, ChronoUnit.DAYS);
     existingConcert = aConcert().published().onDate(twoDaysAgo).build();
-    concerts.add(existingConcert);
+    concerts.save(existingConcert);
   }
 
   private Concert concert;

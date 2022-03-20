@@ -5,11 +5,13 @@ import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.Currency
 import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Embeddable
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class Money {
   private long amount;
@@ -22,8 +24,21 @@ public final class Money {
   }
 
   private Money(long amount, CurrencyCode currency) {
-    Assert.min(amount, 0, "Money amount cannot be less than zero. '%s' given.");
+    Assert.min(amount, 0L, "Money amount cannot be less than zero. '%s' given.");
     this.amount = amount;
     this.currency = currency;
+  }
+
+  public Money multiply(int multiplier) {
+    return new Money(amount * multiplier, currency);
+  }
+
+  public Money add(Money anotherMoney) {
+    Assert.isTrue(
+        currency.equals(anotherMoney.currency),
+        String.format(
+            "Currencies must be identical. '%s' and '%s' given", currency, anotherMoney.currency));
+
+    return Money.of(amount + anotherMoney.amount, "USD");
   }
 }

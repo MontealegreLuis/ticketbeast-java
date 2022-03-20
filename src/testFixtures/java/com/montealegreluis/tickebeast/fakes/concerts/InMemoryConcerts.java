@@ -1,4 +1,4 @@
-package com.montealegreluis.tickebeast.fakes;
+package com.montealegreluis.tickebeast.fakes.concerts;
 
 import com.montealegreluis.ticketbeast.concerts.Concert;
 import com.montealegreluis.ticketbeast.concerts.Concerts;
@@ -23,7 +23,7 @@ public final class InMemoryConcerts implements Concerts {
   }
 
   @Override
-  public void add(Concert concert) {
+  public void save(Concert concert) {
     concerts.add(concert);
   }
 }

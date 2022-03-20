@@ -1,7 +1,7 @@
 package com.montealegreluis.ticketbeast.values;
 
 import com.montealegreluis.assertions.Assert;
-import java.io.Serializable;
+import com.montealegreluis.servicebuses.domainevents.Identifier;
 import java.util.UUID;
 import javax.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public final class Uuid implements StringValueObject, Serializable {
+public final class Uuid implements Identifier, StringValueObject {
   private String identifier;
 
   public static Uuid generate() {

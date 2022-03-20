@@ -49,8 +49,8 @@ publishing {
 }
 
 dependencies {
-    implementation 'com.montealegreluis:assert:1.4.0'
-    implementation 'com.montealegreluis:service-buses:6.3.1'
+    implementation 'com.montealegreluis:assert:1.5.0'
+    implementation "com.montealegreluis:service-buses:${serviceBusesVersion}"
     implementation 'jakarta.persistence:jakarta.persistence-api:2.2.3'
     implementation 'org.springframework:spring-context:5.3.15'
     implementation 'org.springframework.data:spring-data-jpa:2.6.1'
@@ -61,6 +61,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.22'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 
+    testImplementation testFixtures("com.montealegreluis:service-buses:${serviceBusesVersion}")
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testImplementation 'com.h2database:h2:2.1.210'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
@@ -73,7 +74,7 @@ dependencies {
     testFixturesImplementation 'jakarta.persistence:jakarta.persistence-api:2.2.3'
     testFixturesImplementation 'org.springframework.boot:spring-boot-autoconfigure:2.6.3'
     testFixturesImplementation 'org.springframework.data:spring-data-jpa:2.6.1'
-    testFixturesImplementation testFixtures('com.montealegreluis:service-buses:6.3.1')
+    testFixturesImplementation testFixtures("com.montealegreluis:service-buses:${serviceBusesVersion}")
 
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
@@ -112,6 +113,6 @@ pitest {
     outputFormats = ['HTML']
     timestampedReports = false
     junit5PluginVersion = '0.15'
-    coverageThreshold = 93
-    mutationThreshold = 94
+    coverageThreshold = 95
+    mutationThreshold = 96
 }

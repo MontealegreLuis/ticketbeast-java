@@ -1,14 +1,22 @@
 package com.montealegreluis.ticketbeast.concerts;
 
+import com.montealegreluis.servicebuses.domainevents.AggregateRoot;
 import com.montealegreluis.servicebuses.querybus.Response;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.AdditionalInformationConverter;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.SubtitleConverter;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.TitleConverter;
 import com.montealegreluis.ticketbeast.concerts.venue.Venue;
+import com.montealegreluis.ticketbeast.orders.Email;
+import com.montealegreluis.ticketbeast.orders.Order;
+import com.montealegreluis.ticketbeast.orders.OrderHasBeenPlaced;
+import com.montealegreluis.ticketbeast.orders.TicketsQuantity;
 import com.montealegreluis.ticketbeast.values.Uuid;
-import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "concerts")
 @Access(AccessType.FIELD)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public final class Concert implements Response {
+public final class Concert extends AggregateRoot implements Response {
   @Id
   @EmbeddedId
   @AttributeOverrides({
@@ -50,6 +58,9 @@ public final class Concert implements Response {
 
   private Date publishedAt;
 
+  @OneToMany(mappedBy = "concert", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private Set<Order> orders;
+
   public static Concert published(
       Uuid id,
       Title title,
@@ -66,7 +77,7 @@ public final class Concert implements Response {
         ticketPrice,
         venue,
         additionalInformation,
-        Date.from(Instant.now()));
+        Date.from(OffsetDateTime.now(ZoneOffset.UTC).toInstant()));
   }
 
   public static Concert unpublished(
@@ -108,12 +119,14 @@ public final class Concert implements Response {
     this.ticketPrice = ticketPrice;
     this.venue = venue;
     this.additionalInformation = additionalInformation;
+    this.orders = new HashSet<>();
   }
 
   public boolean isPublished() {
     return publishedAt != null;
   }
 
+  @Override
   public Uuid id() {
     return id;
   }
@@ -124,6 +137,18 @@ public final class Concert implements Response {
 
   public Date date() {
     return date;
+  }
+
+  public Money priceForTickets(int quantity) {
+    return ticketPrice.multiply(quantity);
+  }
+
+  public Order orderTickets(Uuid orderId, TicketsQuantity quantity, Email email) {
+    Order order = Order.place(orderId, this, quantity, email);
+    orders.add(order);
+    // order.ticketsIds(); // ?
+    recordThat(new OrderHasBeenPlaced(order.id(), email, id, order.ticketsCount()));
+    return order;
   }
 
   @Override

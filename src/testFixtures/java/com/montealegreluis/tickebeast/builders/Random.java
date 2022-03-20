@@ -20,4 +20,16 @@ public final class Random {
   public static String zipCode() {
     return faker.address().zipCode();
   }
+
+  public static String uuid() {
+    return faker.internet().uuid();
+  }
+
+  public static int ticketsQuantity() {
+    return faker.number().numberBetween(1, 50);
+  }
+
+  public static String email() {
+    return faker.internet().emailAddress();
+  }
 }
