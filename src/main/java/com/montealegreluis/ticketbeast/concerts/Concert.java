@@ -6,17 +6,13 @@ import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.Addition
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.SubtitleConverter;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.TitleConverter;
 import com.montealegreluis.ticketbeast.concerts.venue.Venue;
-import com.montealegreluis.ticketbeast.orders.Email;
-import com.montealegreluis.ticketbeast.orders.Order;
-import com.montealegreluis.ticketbeast.orders.OrderHasBeenPlaced;
-import com.montealegreluis.ticketbeast.orders.TicketsQuantity;
+import com.montealegreluis.ticketbeast.orders.*;
 import com.montealegreluis.ticketbeast.values.Uuid;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -61,6 +57,9 @@ public final class Concert extends AggregateRoot implements Response {
   @OneToMany(mappedBy = "concert", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private Set<Order> orders;
 
+  @OneToMany(mappedBy = "concert", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private Set<Ticket> tickets;
+
   public static Concert published(
       Uuid id,
       Title title,
@@ -80,15 +79,29 @@ public final class Concert extends AggregateRoot implements Response {
         Date.from(OffsetDateTime.now(ZoneOffset.UTC).toInstant()));
   }
 
-  public static Concert unpublished(
+  public static Concert draft(
       Uuid id,
       Title title,
       Subtitle subtitle,
       Date date,
       Money ticketPrice,
       Venue venue,
-      AdditionalInformation additionalInformation) {
-    return new Concert(id, title, subtitle, date, ticketPrice, venue, additionalInformation);
+      AdditionalInformation additionalInformation,
+      TicketsQuantity ticketsQuantity) {
+    final Concert concert =
+        new Concert(id, title, subtitle, date, ticketPrice, venue, additionalInformation);
+    concert.addTickets(ticketsQuantity);
+    concert.recordThat(
+        new ConcertWasDrafted(
+            concert.id, concert.tickets.stream().map(Ticket::id).collect(Collectors.toList())));
+    return concert;
+  }
+
+  private void addTickets(TicketsQuantity quantity) {
+    tickets =
+        IntStream.rangeClosed(1, quantity.value())
+            .mapToObj(index -> Ticket.forConcert(Uuid.generate(), this))
+            .collect(Collectors.toSet());
   }
 
   private Concert(
@@ -139,15 +152,32 @@ public final class Concert extends AggregateRoot implements Response {
     return date;
   }
 
+  public void publish() {
+    this.publishedAt = Date.from(OffsetDateTime.now(ZoneOffset.UTC).toInstant());
+  }
+
   public Money priceForTickets(int quantity) {
     return ticketPrice.multiply(quantity);
   }
 
-  public Order orderTickets(Uuid orderId, TicketsQuantity quantity, Email email) {
-    Order order = Order.place(orderId, this, quantity, email);
+  public Order orderTickets(Uuid orderId, TicketsQuantity quantity, Email email)
+      throws NotEnoughTickets {
+    final List<Ticket> availableTickets =
+        tickets.stream().filter(Ticket::isAvailable).collect(Collectors.toList());
+    if (availableTickets.size() < quantity.value()) {
+      throw NotEnoughTickets.availableFor(email, availableTickets.size(), quantity.value());
+    }
+    Order order = Order.place(orderId, this, email);
+    final Set<Ticket> orderTickets =
+        availableTickets.stream().skip(0).limit(quantity.value()).collect(Collectors.toSet());
+    order.addTickets(orderTickets);
     orders.add(order);
-    // order.ticketsIds(); // ?
-    recordThat(new OrderHasBeenPlaced(order.id(), email, id, order.ticketsCount()));
+    recordThat(
+        new OrderHasBeenPlaced(
+            order.id(),
+            email,
+            id,
+            orderTickets.stream().map(Ticket::id).collect(Collectors.toList())));
     return order;
   }
 

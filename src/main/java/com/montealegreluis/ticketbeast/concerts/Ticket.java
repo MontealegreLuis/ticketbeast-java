@@ -1,5 +1,7 @@
-package com.montealegreluis.ticketbeast.orders;
+package com.montealegreluis.ticketbeast.concerts;
 
+import com.montealegreluis.servicebuses.domainevents.Identifier;
+import com.montealegreluis.ticketbeast.orders.Order;
 import com.montealegreluis.ticketbeast.values.Uuid;
 import java.util.Objects;
 import javax.persistence.*;
@@ -18,21 +20,33 @@ public final class Ticket {
   })
   private Uuid id;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "order_id", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "order_id")
   private Order order;
 
-  static Ticket forOrder(Uuid id, Order order) {
-    return new Ticket(id, order);
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "concert_id", nullable = false)
+  private Concert concert;
+
+  static Ticket forConcert(Uuid id, Concert concert) {
+    return new Ticket(id, concert);
   }
 
-  private Ticket(Uuid id, Order order) {
+  private Ticket(Uuid id, Concert concert) {
     this.id = id;
+    this.concert = concert;
+  }
+
+  public void setOrder(Order order) {
     this.order = order;
   }
 
-  public Order getOrder() {
-    return order;
+  public boolean isAvailable() {
+    return order == null;
+  }
+
+  public Identifier id() {
+    return id;
   }
 
   @Override

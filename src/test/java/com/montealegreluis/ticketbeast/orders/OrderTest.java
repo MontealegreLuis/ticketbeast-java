@@ -4,7 +4,6 @@ import static com.montealegreluis.tickebeast.builders.orders.OrderBuilder.anOrde
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.montealegreluis.ticketbeast.values.Uuid;
-import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 final class OrderTest {
@@ -15,10 +14,6 @@ final class OrderTest {
 
     assertNotNull(order);
     assertEquals(Uuid.withValue(id), order.id());
-    assertEquals(2, order.ticketsCount());
-    var tickets = new ArrayList<>(order.getTickets());
-    assertEquals(order, tickets.get(0).getOrder());
-    assertEquals(order, tickets.get(1).getOrder());
   }
 
   @Test

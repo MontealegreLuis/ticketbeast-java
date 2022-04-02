@@ -3,11 +3,7 @@ package com.montealegreluis.tickebeast.builders.concerts;
 import static com.montealegreluis.tickebeast.builders.concerts.venue.VenueBuilder.aVenue;
 
 import com.montealegreluis.tickebeast.builders.Value;
-import com.montealegreluis.ticketbeast.concerts.AdditionalInformation;
-import com.montealegreluis.ticketbeast.concerts.Concert;
-import com.montealegreluis.ticketbeast.concerts.Money;
-import com.montealegreluis.ticketbeast.concerts.Subtitle;
-import com.montealegreluis.ticketbeast.concerts.Title;
+import com.montealegreluis.ticketbeast.concerts.*;
 import com.montealegreluis.ticketbeast.concerts.venue.Venue;
 import com.montealegreluis.ticketbeast.values.Uuid;
 import java.time.Instant;
@@ -23,6 +19,7 @@ public final class ConcertBuilder {
   private final Venue venue = aVenue().build();
   private final AdditionalInformation additionalInformation =
       new AdditionalInformation("For tickets call (555) 222-2222.");
+  private TicketsQuantity ticketQuantity = Value.ticketQuantity();
 
   public static ConcertBuilder aConcert() {
     return new ConcertBuilder();
@@ -48,12 +45,25 @@ public final class ConcertBuilder {
     return this;
   }
 
+  public ConcertBuilder withTicketsCount(int ticketsCount) {
+    ticketQuantity = new TicketsQuantity(ticketsCount);
+    return this;
+  }
+
   public Concert build() {
-    if (published) {
-      return Concert.published(
-          concertId, title, subtitle, concertDate, ticketPrice, venue, additionalInformation);
-    }
-    return Concert.unpublished(
-        concertId, title, subtitle, concertDate, ticketPrice, venue, additionalInformation);
+    final Concert concert =
+        Concert.draft(
+            concertId,
+            title,
+            subtitle,
+            concertDate,
+            ticketPrice,
+            venue,
+            additionalInformation,
+            ticketQuantity);
+
+    if (published) concert.publish();
+
+    return concert;
   }
 }

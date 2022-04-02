@@ -3,11 +3,10 @@ package com.montealegreluis.ticketbeast.orders;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.EmailConverter;
 import com.montealegreluis.ticketbeast.concerts.Concert;
 import com.montealegreluis.ticketbeast.concerts.Money;
+import com.montealegreluis.ticketbeast.concerts.Ticket;
 import com.montealegreluis.ticketbeast.values.Uuid;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -34,17 +33,12 @@ public final class Order {
   @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private Set<Ticket> tickets;
 
-  public static Order place(Uuid orderId, Concert concert, TicketsQuantity quantity, Email email) {
-    final Order order = new Order(orderId, concert, email);
-    final Set<Ticket> tickets =
-        IntStream.rangeClosed(1, quantity.value())
-            .mapToObj(index -> Ticket.forOrder(Uuid.generate(), order))
-            .collect(Collectors.toSet());
-    order.addTickets(tickets);
-    return order;
+  public static Order place(Uuid orderId, Concert concert, Email email) {
+    return new Order(orderId, concert, email);
   }
 
-  private void addTickets(Set<Ticket> tickets) {
+  public void addTickets(Set<Ticket> tickets) {
+    tickets.forEach(ticket -> ticket.setOrder(this));
     this.tickets = tickets;
   }
 
@@ -52,14 +46,6 @@ public final class Order {
     this.id = id;
     this.concert = concert;
     this.email = email;
-  }
-
-  public int ticketsCount() {
-    return tickets.size();
-  }
-
-  public Set<Ticket> getTickets() {
-    return tickets;
   }
 
   public Uuid id() {

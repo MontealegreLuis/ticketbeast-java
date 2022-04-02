@@ -1,4 +1,4 @@
-package com.montealegreluis.ticketbeast.orders;
+package com.montealegreluis.ticketbeast.concerts;
 
 import static org.junit.jupiter.api.Assertions.*;
 

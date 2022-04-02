@@ -4,23 +4,39 @@ import static com.montealegreluis.tickebeast.builders.concerts.ConcertBuilder.*;
 import static com.montealegreluis.tickebeast.builders.concerts.venue.VenueBuilder.aVenue;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.montealegreluis.servicebuses.domainevents.DomainEvent;
 import com.montealegreluis.tickebeast.builders.Value;
 import com.montealegreluis.ticketbeast.values.Uuid;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 final class ConcertTest {
   @Test
-  public void it_knows_it_has_been_published() {
+  void it_knows_it_can_be_drafted() {
+    var concert = aConcert().build();
+
+    var events = (List<DomainEvent>) concert.events().all();
+    assertEquals(1, events.size());
+    assertEquals(
+        new ConcertWasDrafted(
+            concert.id(),
+            concert.getTickets().stream().map(Ticket::id).collect(Collectors.toList())),
+        events.get(0));
+  }
+
+  @Test
+  void it_knows_it_has_been_published() {
     var publishedConcert = aConcert().published().build();
 
     assertTrue(publishedConcert.isPublished());
   }
 
   @Test
-  public void it_knows_if_it_occurs_after_a_given_date() {
+  void it_knows_if_it_occurs_after_a_given_date() {
     var now = Instant.parse("2022-02-07T00:00:00.00Z");
     var twoDaysAgo = now.minus(2, ChronoUnit.DAYS);
     var inTwoDays = now.plus(2, ChronoUnit.DAYS);
@@ -61,6 +77,29 @@ final class ConcertTest {
     var ticketsPrice = concert.priceForTickets(quantity);
 
     assertEquals(Money.of(15000, "USD"), ticketsPrice);
+  }
+
+  @Test
+  void it_fails_to_order_tickets_if_there_are_not_enough_tickets() {
+    var concert = aConcert().withTicketsCount(5).build();
+    var moreTicketsThanAvailable = new TicketsQuantity(6);
+
+    assertThrows(
+        NotEnoughTickets.class,
+        () -> concert.orderTickets(Value.id(), moreTicketsThanAvailable, Value.email()));
+  }
+
+  @Test
+  void it_fails_to_order_tickets_if_there_are_not_enough_tickets_available()
+      throws NotEnoughTickets {
+    var concert = aConcert().withTicketsCount(5).build();
+    // only 2 will remain available, after ordering 3 tickets
+    concert.orderTickets(Value.id(), new TicketsQuantity(3), Value.email());
+    var moreTicketsThanAvailable = new TicketsQuantity(3);
+
+    assertThrows(
+        NotEnoughTickets.class,
+        () -> concert.orderTickets(Value.id(), moreTicketsThanAvailable, Value.email()));
   }
 
   @Test

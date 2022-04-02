@@ -1,4 +1,4 @@
-package com.montealegreluis.ticketbeast.orders;
+package com.montealegreluis.ticketbeast.concerts;
 
 import com.montealegreluis.assertions.Assert;
 import com.montealegreluis.ticketbeast.values.IntegerValueObject;

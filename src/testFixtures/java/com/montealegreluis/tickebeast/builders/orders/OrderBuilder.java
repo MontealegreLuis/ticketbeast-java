@@ -3,8 +3,8 @@ package com.montealegreluis.tickebeast.builders.orders;
 import static com.montealegreluis.tickebeast.builders.concerts.ConcertBuilder.aConcert;
 
 import com.montealegreluis.tickebeast.builders.Value;
+import com.montealegreluis.ticketbeast.concerts.TicketsQuantity;
 import com.montealegreluis.ticketbeast.orders.Order;
-import com.montealegreluis.ticketbeast.orders.TicketsQuantity;
 import com.montealegreluis.ticketbeast.values.Uuid;
 
 public final class OrderBuilder {
@@ -26,6 +26,6 @@ public final class OrderBuilder {
   }
 
   public Order build() {
-    return Order.place(id, aConcert().build(), ticketsQuantity, Value.email());
+    return Order.place(id, aConcert().build(), Value.email());
   }
 }

@@ -23,7 +23,6 @@ public abstract class ConcertsContractTest {
   public void it_does_not_find_an_unpublished_concert() {
     var concerts = concerts();
     var unpublishedConcert = aConcert().build();
-    unpublishedConcert.orderTickets(Value.id(), Value.ticketQuantity(), Value.email());
     concerts.save(unpublishedConcert);
     var criteria =
         new PublishedConcertCriteria(unpublishedConcert.id(), Value.dateInFutureDays(10));
