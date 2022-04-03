@@ -1,9 +1,9 @@
 package com.montealegreluis.ticketbeast.concerts;
 
-import com.montealegreluis.servicebuses.DomainException;
 import com.montealegreluis.ticketbeast.orders.Email;
+import com.montealegreluis.ticketbeast.shared.InvalidAction;
 
-public class NotEnoughTickets extends DomainException {
+public class NotEnoughTickets extends InvalidAction {
   public static NotEnoughTickets availableFor(Email email, int availableTickets, int ticketsCount) {
     return new NotEnoughTickets(
         String.format(
