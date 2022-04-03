@@ -70,13 +70,18 @@ final class PurchaseTicketsActionTest {
   void it_completes_a_tickets_purchase() throws ActionException {
     var inSevenDays = clock.instant().plus(7, DAYS);
     var tenDollars = Money.of(1000, "USD");
+    var ticketsQuantity = 5;
     var publishedUpcomingConcert =
-        aConcert().published().onDate(inSevenDays).withTicketPrice(tenDollars).build();
+        aConcert()
+            .published()
+            .withTicketsCount(ticketsQuantity)
+            .onDate(inSevenDays)
+            .withTicketPrice(tenDollars)
+            .build();
     publishedUpcomingConcert.events();
     var criteria =
         new PublishedConcertCriteria(publishedUpcomingConcert.id(), Date.from(clock.instant()));
     when(concerts.matching(criteria)).thenReturn(publishedUpcomingConcert);
-    var ticketsQuantity = 5;
     var concertId = publishedUpcomingConcert.id().value();
     var input =
         new PurchaseTicketsInput(concertId, ticketsQuantity, Random.email(), VALID_TOKEN.value());
