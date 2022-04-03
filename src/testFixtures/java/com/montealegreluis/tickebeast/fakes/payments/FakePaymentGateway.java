@@ -12,7 +12,7 @@ public class FakePaymentGateway implements PaymentGateway {
   private final List<Money> charges = new ArrayList<>();
 
   @Override
-  public void charge(Money amount, PaymentToken token) {
+  public void charge(Money amount, PaymentToken token) throws PaymentFailed {
     if (!VALID_TOKEN.equals(token)) throw PaymentFailed.forTransactionWith(token);
     charges.add(amount);
   }

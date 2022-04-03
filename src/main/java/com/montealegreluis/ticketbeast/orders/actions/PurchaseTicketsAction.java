@@ -5,6 +5,7 @@ import com.montealegreluis.servicebuses.commandbus.CommandHandler;
 import com.montealegreluis.servicebuses.domainevents.EventBus;
 import com.montealegreluis.ticketbeast.concerts.*;
 import com.montealegreluis.ticketbeast.orders.Order;
+import com.montealegreluis.ticketbeast.payments.PaymentFailed;
 import com.montealegreluis.ticketbeast.payments.PaymentGateway;
 import java.time.Clock;
 import java.util.Date;
@@ -25,7 +26,8 @@ public final class PurchaseTicketsAction implements CommandHandler<PurchaseTicke
   }
 
   @Override
-  public void execute(PurchaseTicketsInput input) throws UnknownConcert, NotEnoughTickets {
+  public void execute(PurchaseTicketsInput input)
+      throws UnknownConcert, NotEnoughTickets, PaymentFailed {
     final PublishedConcertCriteria criteria =
         new PublishedConcertCriteria(input.concertId(), Date.from(clock.instant()));
     final Concert concert = concerts.matching(criteria);
