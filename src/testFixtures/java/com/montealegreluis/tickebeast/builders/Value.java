@@ -6,7 +6,7 @@ import com.montealegreluis.ticketbeast.concerts.Subtitle;
 import com.montealegreluis.ticketbeast.concerts.TicketsQuantity;
 import com.montealegreluis.ticketbeast.concerts.Title;
 import com.montealegreluis.ticketbeast.orders.Email;
-import com.montealegreluis.ticketbeast.values.Uuid;
+import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;

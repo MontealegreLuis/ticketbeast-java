@@ -1,4 +1,4 @@
-package com.montealegreluis.ticketbeast.values;
+package com.montealegreluis.ticketbeast.shared;
 
 public interface IntegerValueObject {
   Integer value();

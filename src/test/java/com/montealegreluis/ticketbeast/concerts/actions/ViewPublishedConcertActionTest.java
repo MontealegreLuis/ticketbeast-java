@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.montealegreluis.tickebeast.fakes.concerts.InMemoryConcerts;
 import com.montealegreluis.ticketbeast.concerts.UnknownConcert;
-import com.montealegreluis.ticketbeast.values.Uuid;
+import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;

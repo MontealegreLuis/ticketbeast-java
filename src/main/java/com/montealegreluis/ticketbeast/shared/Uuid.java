@@ -1,4 +1,4 @@
-package com.montealegreluis.ticketbeast.values;
+package com.montealegreluis.ticketbeast.shared;
 
 import com.montealegreluis.assertions.Assert;
 import com.montealegreluis.servicebuses.domainevents.Identifier;

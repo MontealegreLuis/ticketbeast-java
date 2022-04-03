@@ -1,4 +1,4 @@
-package com.montealegreluis.ticketbeast.values;
+package com.montealegreluis.ticketbeast.shared;
 
 import static org.junit.jupiter.api.Assertions.*;
 

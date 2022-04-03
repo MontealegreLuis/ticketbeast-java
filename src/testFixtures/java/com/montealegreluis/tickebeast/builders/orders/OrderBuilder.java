@@ -5,7 +5,7 @@ import static com.montealegreluis.tickebeast.builders.concerts.ConcertBuilder.aC
 import com.montealegreluis.tickebeast.builders.Value;
 import com.montealegreluis.ticketbeast.concerts.TicketsQuantity;
 import com.montealegreluis.ticketbeast.orders.Order;
-import com.montealegreluis.ticketbeast.values.Uuid;
+import com.montealegreluis.ticketbeast.shared.Uuid;
 
 public final class OrderBuilder {
   private TicketsQuantity ticketsQuantity = Value.ticketQuantity();

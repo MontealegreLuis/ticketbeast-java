@@ -3,7 +3,7 @@ package com.montealegreluis.ticketbeast.orders;
 import static com.montealegreluis.tickebeast.builders.orders.OrderBuilder.anOrder;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.montealegreluis.ticketbeast.values.Uuid;
+import com.montealegreluis.ticketbeast.shared.Uuid;
 import org.junit.jupiter.api.Test;
 
 final class OrderTest {

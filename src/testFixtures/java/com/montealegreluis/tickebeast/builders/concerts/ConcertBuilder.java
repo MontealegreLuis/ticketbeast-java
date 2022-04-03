@@ -5,7 +5,7 @@ import static com.montealegreluis.tickebeast.builders.concerts.venue.VenueBuilde
 import com.montealegreluis.tickebeast.builders.Value;
 import com.montealegreluis.ticketbeast.concerts.*;
 import com.montealegreluis.ticketbeast.concerts.venue.Venue;
-import com.montealegreluis.ticketbeast.values.Uuid;
+import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.time.Instant;
 import java.util.Date;
 

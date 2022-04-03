@@ -1,6 +1,6 @@
 package com.montealegreluis.ticketbeast.concerts;
 
-import com.montealegreluis.ticketbeast.values.Uuid;
+import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.util.Date;
 import lombok.EqualsAndHashCode;
 

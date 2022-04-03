@@ -4,7 +4,7 @@ import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.EmailConve
 import com.montealegreluis.ticketbeast.concerts.Concert;
 import com.montealegreluis.ticketbeast.concerts.Money;
 import com.montealegreluis.ticketbeast.concerts.Ticket;
-import com.montealegreluis.ticketbeast.values.Uuid;
+import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;

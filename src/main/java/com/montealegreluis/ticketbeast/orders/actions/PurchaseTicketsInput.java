@@ -4,7 +4,7 @@ import com.montealegreluis.servicebuses.commandbus.Command;
 import com.montealegreluis.ticketbeast.concerts.TicketsQuantity;
 import com.montealegreluis.ticketbeast.orders.Email;
 import com.montealegreluis.ticketbeast.payments.PaymentToken;
-import com.montealegreluis.ticketbeast.values.Uuid;
+import com.montealegreluis.ticketbeast.shared.Uuid;
 
 public final class PurchaseTicketsInput implements Command {
   private final Uuid concertId;

@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.montealegreluis.servicebuses.domainevents.Identifier;
 import com.montealegreluis.tickebeast.builders.Value;
-import com.montealegreluis.ticketbeast.values.Uuid;
+import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 

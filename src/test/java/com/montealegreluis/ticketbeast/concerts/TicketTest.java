@@ -3,7 +3,7 @@ package com.montealegreluis.ticketbeast.concerts;
 import static com.montealegreluis.tickebeast.builders.concerts.ConcertBuilder.aConcert;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.montealegreluis.ticketbeast.values.Uuid;
+import com.montealegreluis.ticketbeast.shared.Uuid;
 import org.junit.jupiter.api.Test;
 
 final class TicketTest {

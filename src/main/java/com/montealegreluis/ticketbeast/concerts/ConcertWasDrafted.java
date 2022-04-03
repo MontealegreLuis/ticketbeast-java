@@ -2,7 +2,7 @@ package com.montealegreluis.ticketbeast.concerts;
 
 import com.montealegreluis.servicebuses.domainevents.DomainEvent;
 import com.montealegreluis.servicebuses.domainevents.Identifier;
-import com.montealegreluis.ticketbeast.values.Uuid;
+import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.EqualsAndHashCode;

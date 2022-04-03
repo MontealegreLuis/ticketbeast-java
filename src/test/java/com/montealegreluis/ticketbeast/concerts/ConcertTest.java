@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.montealegreluis.servicebuses.domainevents.DomainEvent;
 import com.montealegreluis.tickebeast.builders.Value;
-import com.montealegreluis.ticketbeast.values.Uuid;
+import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;

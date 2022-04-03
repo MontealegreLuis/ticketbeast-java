@@ -1,7 +1,7 @@
 package com.montealegreluis.ticketbeast.orders;
 
 import com.montealegreluis.assertions.Assert;
-import com.montealegreluis.ticketbeast.values.StringValueObject;
+import com.montealegreluis.ticketbeast.shared.StringValueObject;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode

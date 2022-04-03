@@ -7,7 +7,7 @@ import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.Subtitle
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.TitleConverter;
 import com.montealegreluis.ticketbeast.concerts.venue.Venue;
 import com.montealegreluis.ticketbeast.orders.*;
-import com.montealegreluis.ticketbeast.values.Uuid;
+import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
