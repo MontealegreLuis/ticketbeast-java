@@ -30,30 +30,36 @@ public final class Order {
   @Convert(converter = EmailConverter.class)
   private Email email;
 
+  @Embedded
+  @AttributeOverrides({
+    @AttributeOverride(name = "amount", column = @Column(name = "order_amount")),
+    @AttributeOverride(name = "currency", column = @Column(name = "order_currency"))
+  })
+  private Money total;
+
   @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private Set<Ticket> tickets;
 
-  public static Order place(Uuid orderId, Concert concert, Email email) {
-    return new Order(orderId, concert, email);
+  public static Order place(
+      Uuid orderId, Concert concert, Email email, Set<Ticket> tickets, Money total) {
+    return new Order(orderId, concert, email, tickets, total);
   }
 
-  public void addTickets(Set<Ticket> tickets) {
+  private Order(Uuid id, Concert concert, Email email, Set<Ticket> tickets, Money total) {
+    this.id = id;
+    this.concert = concert;
+    this.email = email;
+    addTickets(tickets);
+    this.total = total;
+  }
+
+  private void addTickets(Set<Ticket> tickets) {
     tickets.forEach(ticket -> ticket.setOrder(this));
     this.tickets = tickets;
   }
 
-  private Order(Uuid id, Concert concert, Email email) {
-    this.id = id;
-    this.concert = concert;
-    this.email = email;
-  }
-
   public Uuid id() {
     return id;
-  }
-
-  public Money total() {
-    return concert.priceForTickets(tickets.size());
   }
 
   @Override

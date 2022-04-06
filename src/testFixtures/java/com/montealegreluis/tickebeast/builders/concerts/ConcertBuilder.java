@@ -40,6 +40,11 @@ public final class ConcertBuilder {
     return this;
   }
 
+  public ConcertBuilder withId(String uuid) {
+    concertId = Uuid.withValue(uuid);
+    return this;
+  }
+
   public ConcertBuilder withTicketPrice(Money price) {
     this.ticketPrice = price;
     return this;

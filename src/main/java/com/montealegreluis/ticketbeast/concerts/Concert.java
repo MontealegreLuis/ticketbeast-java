@@ -160,25 +160,22 @@ public final class Concert extends AggregateRoot implements Response {
     return ticketPrice.multiply(quantity);
   }
 
-  public Order orderTickets(Uuid orderId, TicketsQuantity quantity, Email email)
-      throws NotEnoughTickets {
-    final List<Ticket> availableTickets =
-        tickets.stream().filter(Ticket::isAvailable).collect(Collectors.toList());
-    if (availableTickets.size() < quantity.value()) {
-      throw NotEnoughTickets.availableFor(email, availableTickets.size(), quantity.value());
-    }
-    Order order = Order.place(orderId, this, email);
-    final Set<Ticket> orderTickets =
-        availableTickets.stream().skip(0).limit(quantity.value()).collect(Collectors.toSet());
-    order.addTickets(orderTickets);
+  public Order placeOrder(Uuid orderId, Set<Ticket> tickets, Email email, Money total) {
+    Order order = Order.place(orderId, this, email, tickets, total);
     orders.add(order);
     recordThat(
         new OrderHasBeenPlaced(
-            order.id(),
-            email,
-            id,
-            orderTickets.stream().map(Ticket::id).collect(Collectors.toList())));
+            order.id(), email, id, tickets.stream().map(Ticket::id).collect(Collectors.toList())));
     return order;
+  }
+
+  public Set<Ticket> availableTickets(TicketsQuantity quantity) throws NotEnoughTickets {
+    final List<Ticket> availableTickets =
+        tickets.stream().filter(Ticket::isAvailable).collect(Collectors.toList());
+    if (availableTickets.size() < quantity.value()) {
+      throw NotEnoughTickets.available(availableTickets.size(), quantity.value());
+    }
+    return availableTickets.stream().skip(0).limit(quantity.value()).collect(Collectors.toSet());
   }
 
   @Override

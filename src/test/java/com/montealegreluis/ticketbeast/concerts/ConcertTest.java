@@ -80,26 +80,24 @@ final class ConcertTest {
   }
 
   @Test
-  void it_fails_to_order_tickets_if_there_are_not_enough_tickets() {
+  void it_fails_to_find_available_tickets_if_there_are_not_enough_tickets() {
     var concert = aConcert().withTicketsCount(5).build();
     var moreTicketsThanAvailable = new TicketsQuantity(6);
 
-    assertThrows(
-        NotEnoughTickets.class,
-        () -> concert.orderTickets(Value.id(), moreTicketsThanAvailable, Value.email()));
+    assertThrows(NotEnoughTickets.class, () -> concert.availableTickets(moreTicketsThanAvailable));
   }
 
   @Test
-  void it_fails_to_order_tickets_if_there_are_not_enough_tickets_available()
+  void it_fails_to_find_available_tickets_if_there_are_not_enough_tickets_available()
       throws NotEnoughTickets {
     var concert = aConcert().withTicketsCount(5).build();
+    var quantity = new TicketsQuantity(3);
+    var tickets = concert.availableTickets(quantity);
     // only 2 will remain available, after ordering 3 tickets
-    concert.orderTickets(Value.id(), new TicketsQuantity(3), Value.email());
+    concert.placeOrder(Value.id(), tickets, Value.email(), concert.priceForTickets(tickets.size()));
     var moreTicketsThanAvailable = new TicketsQuantity(3);
 
-    assertThrows(
-        NotEnoughTickets.class,
-        () -> concert.orderTickets(Value.id(), moreTicketsThanAvailable, Value.email()));
+    assertThrows(NotEnoughTickets.class, () -> concert.availableTickets(moreTicketsThanAvailable));
   }
 
   @Test

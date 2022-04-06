@@ -1,10 +1,13 @@
 package com.montealegreluis.ticketbeast.orders.actions;
 
 import com.montealegreluis.servicebuses.commandbus.Command;
+import com.montealegreluis.ticketbeast.concerts.PublishedConcertCriteria;
 import com.montealegreluis.ticketbeast.concerts.TicketsQuantity;
 import com.montealegreluis.ticketbeast.orders.Email;
 import com.montealegreluis.ticketbeast.payments.PaymentToken;
 import com.montealegreluis.ticketbeast.shared.Uuid;
+import java.time.Instant;
+import java.util.Date;
 
 public final class PurchaseTicketsInput implements Command {
   private final Uuid concertId;
@@ -22,8 +25,8 @@ public final class PurchaseTicketsInput implements Command {
     this.orderId = Uuid.generate();
   }
 
-  public Uuid concertId() {
-    return concertId;
+  public PublishedConcertCriteria criteria(Instant now) {
+    return new PublishedConcertCriteria(concertId, Date.from(now));
   }
 
   public TicketsQuantity quantity() {
