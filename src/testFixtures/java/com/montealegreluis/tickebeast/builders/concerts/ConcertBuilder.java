@@ -55,6 +55,11 @@ public final class ConcertBuilder {
     return this;
   }
 
+  public ConcertBuilder tobeHeldOnDate(Date date) {
+    concertDate = date;
+    return this;
+  }
+
   public Concert build() {
     final Concert concert =
         Concert.draft(
