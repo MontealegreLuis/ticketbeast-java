@@ -60,25 +60,6 @@ public final class Concert extends AggregateRoot implements Response {
   @OneToMany(mappedBy = "concert", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private Set<Ticket> tickets;
 
-  public static Concert published(
-      Uuid id,
-      Title title,
-      Subtitle subtitle,
-      Date date,
-      Money ticketPrice,
-      Venue venue,
-      AdditionalInformation additionalInformation) {
-    return new Concert(
-        id,
-        title,
-        subtitle,
-        date,
-        ticketPrice,
-        venue,
-        additionalInformation,
-        Date.from(OffsetDateTime.now(ZoneOffset.UTC).toInstant()));
-  }
-
   public static Concert draft(
       Uuid id,
       Title title,
@@ -89,19 +70,12 @@ public final class Concert extends AggregateRoot implements Response {
       AdditionalInformation additionalInformation,
       TicketsQuantity ticketsQuantity) {
     final Concert concert =
-        new Concert(id, title, subtitle, date, ticketPrice, venue, additionalInformation);
-    concert.addTickets(ticketsQuantity);
+        new Concert(
+            id, title, subtitle, date, ticketPrice, venue, additionalInformation, ticketsQuantity);
     concert.recordThat(
         new ConcertWasDrafted(
             concert.id, concert.tickets.stream().map(Ticket::id).collect(Collectors.toList())));
     return concert;
-  }
-
-  private void addTickets(TicketsQuantity quantity) {
-    tickets =
-        IntStream.rangeClosed(1, quantity.value())
-            .mapToObj(index -> Ticket.forConcert(Uuid.generate(), this))
-            .collect(Collectors.toSet());
   }
 
   private Concert(
@@ -112,19 +86,7 @@ public final class Concert extends AggregateRoot implements Response {
       Money ticketPrice,
       Venue venue,
       AdditionalInformation additionalInformation,
-      Date publishedAt) {
-    this(id, title, subtitle, date, ticketPrice, venue, additionalInformation);
-    this.publishedAt = publishedAt;
-  }
-
-  private Concert(
-      Uuid id,
-      Title title,
-      Subtitle subtitle,
-      Date date,
-      Money ticketPrice,
-      Venue venue,
-      AdditionalInformation additionalInformation) {
+      TicketsQuantity ticketsQuantity) {
     this.id = id;
     this.title = title;
     this.subtitle = subtitle;
@@ -133,6 +95,14 @@ public final class Concert extends AggregateRoot implements Response {
     this.venue = venue;
     this.additionalInformation = additionalInformation;
     this.orders = new HashSet<>();
+    addTickets(ticketsQuantity);
+  }
+
+  private void addTickets(TicketsQuantity quantity) {
+    tickets =
+        IntStream.rangeClosed(1, quantity.value())
+            .mapToObj(index -> Ticket.forConcert(Uuid.generate(), this))
+            .collect(Collectors.toSet());
   }
 
   public boolean isPublished() {

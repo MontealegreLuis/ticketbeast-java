@@ -55,9 +55,11 @@ final class ConcertTest {
     var ticketPrice = Money.of(1000, "USD");
     var venue = aVenue().build();
     var additionalInformation = Value.additionalInformation();
+    var ticketsQuantity = Value.ticketQuantity();
 
     var concert =
-        Concert.published(id, title, subtitle, date, ticketPrice, venue, additionalInformation);
+        Concert.draft(
+            id, title, subtitle, date, ticketPrice, venue, additionalInformation, ticketsQuantity);
 
     assertEquals(id, concert.id());
     assertEquals(title, concert.getTitle());
@@ -66,7 +68,7 @@ final class ConcertTest {
     assertEquals(ticketPrice, concert.getTicketPrice());
     assertEquals(venue, concert.getVenue());
     assertEquals(additionalInformation, concert.getAdditionalInformation());
-    assertNotNull(concert.getPublishedAt());
+    assertEquals(ticketsQuantity.value(), concert.getTickets().size());
   }
 
   @Test
