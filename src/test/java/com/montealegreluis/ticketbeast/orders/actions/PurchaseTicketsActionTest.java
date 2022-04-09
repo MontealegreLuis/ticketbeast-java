@@ -12,6 +12,8 @@ import com.montealegreluis.tickebeast.builders.Random;
 import com.montealegreluis.tickebeast.builders.Value;
 import com.montealegreluis.tickebeast.fakes.payments.FakePaymentGateway;
 import com.montealegreluis.ticketbeast.concerts.*;
+import com.montealegreluis.ticketbeast.orders.Order;
+import com.montealegreluis.ticketbeast.orders.Orders;
 import com.montealegreluis.ticketbeast.payments.PaymentFailed;
 import java.time.Clock;
 import java.time.Instant;
@@ -89,7 +91,7 @@ final class PurchaseTicketsActionTest {
     action.execute(input);
 
     assertEquals(Money.of(5000, "USD"), payments.totalCharges());
-    verify(concerts, times(1)).save(publishedUpcomingConcert);
+    verify(orders, times(1)).save(any(Order.class));
     assertEquals(1, eventBus.dispatchedEventsCount());
   }
 
@@ -98,14 +100,16 @@ final class PurchaseTicketsActionTest {
     var now = Instant.parse("2022-03-19T10:37:30.00Z");
     payments = new FakePaymentGateway();
     concerts = mock(Concerts.class);
+    orders = mock(Orders.class);
     eventBus = new FakeEventBus();
     clock = Clock.fixed(now, ZoneId.of("UTC"));
-    action = new PurchaseTicketsAction(concerts, payments, eventBus, clock);
+    action = new PurchaseTicketsAction(orders, concerts, payments, eventBus, clock);
   }
 
   private PurchaseTicketsAction action;
   private FakePaymentGateway payments;
   private FakeEventBus eventBus;
   private Concerts concerts;
+  private Orders orders;
   private Clock clock;
 }

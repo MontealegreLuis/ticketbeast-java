@@ -1,4 +1,4 @@
-package com.montealegreluis.ticketbeast.adapters.jpa.repostories.concerts;
+package com.montealegreluis.ticketbeast.adapters.jpa.repositories.concerts;
 
 import com.montealegreluis.ticketbeast.concerts.Concert;
 import com.montealegreluis.ticketbeast.concerts.Concerts;
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class ConcertsRepository implements Concerts {
-  private final JpaConcerts concerts;
+  private final ConcertsJpaRepository concerts;
 
-  public ConcertsRepository(JpaConcerts concerts) {
+  public ConcertsRepository(ConcertsJpaRepository concerts) {
     this.concerts = concerts;
   }
 

@@ -1,12 +1,14 @@
 package com.montealegreluis.ticketbeast.orders;
 
+import com.montealegreluis.servicebuses.domainevents.AggregateRoot;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.EmailConverter;
-import com.montealegreluis.ticketbeast.concerts.Concert;
 import com.montealegreluis.ticketbeast.concerts.Money;
+import com.montealegreluis.ticketbeast.concerts.Reservation;
 import com.montealegreluis.ticketbeast.concerts.Ticket;
 import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -15,17 +17,13 @@ import lombok.NoArgsConstructor;
 @Table(name = "orders")
 @Access(AccessType.FIELD)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public final class Order {
+public final class Order extends AggregateRoot {
   @Id
   @EmbeddedId
   @AttributeOverrides({
     @AttributeOverride(name = "identifier", column = @Column(name = "order_id", length = 36))
   })
   private Uuid id;
-
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "concert_id", nullable = false)
-  private Concert concert;
 
   @Convert(converter = EmailConverter.class)
   private Email email;
@@ -40,17 +38,21 @@ public final class Order {
   @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private Set<Ticket> tickets;
 
-  public static Order place(
-      Uuid orderId, Concert concert, Email email, Set<Ticket> tickets, Money total) {
-    return new Order(orderId, concert, email, tickets, total);
+  public static Order place(Uuid orderId, Email email, Reservation reservation) {
+    final Order order = new Order(orderId, email, reservation);
+    order.recordThat(
+        new OrderHasBeenPlaced(
+            order.id,
+            email,
+            reservation.tickets().stream().map(Ticket::id).collect(Collectors.toList())));
+    return order;
   }
 
-  private Order(Uuid id, Concert concert, Email email, Set<Ticket> tickets, Money total) {
+  private Order(Uuid id, Email email, Reservation reservation) {
     this.id = id;
-    this.concert = concert;
     this.email = email;
-    addTickets(tickets);
-    this.total = total;
+    addTickets(reservation.tickets());
+    this.total = reservation.cost();
   }
 
   private void addTickets(Set<Ticket> tickets) {

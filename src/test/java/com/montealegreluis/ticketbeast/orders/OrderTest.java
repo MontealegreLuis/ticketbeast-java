@@ -15,10 +15,8 @@ final class OrderTest {
     var id = "ac401a00-2f4b-4be1-9b1b-27896335b279";
     var concert = aConcert().withTicketsCount(2).build();
     var quantity = new TicketsQuantity(2);
-    var tickets = concert.availableTickets(quantity);
-    var order =
-        concert.placeOrder(
-            Uuid.withValue(id), tickets, Value.email(), concert.priceForTickets(tickets.size()));
+    var tickets = concert.reserveTickets(quantity);
+    var order = Order.place(Uuid.withValue(id), Value.email(), tickets);
 
     assertNotNull(order);
     assertEquals(Uuid.withValue(id), order.id());
@@ -29,22 +27,16 @@ final class OrderTest {
     var quantity = new TicketsQuantity(2);
     var concertA =
         aConcert().withId("a6609f9a-85fa-43b9-898c-bd3b34c87191").withTicketsCount(2).build();
-    var ticketsA = concertA.availableTickets(quantity);
+    var ticketsA = concertA.reserveTickets(quantity);
     var orderA =
-        concertA.placeOrder(
-            Uuid.withValue("76f3fe0d-4003-4fc4-803a-8801ee804bed"),
-            ticketsA,
-            Value.email(),
-            concertA.priceForTickets(ticketsA.size()));
+        Order.place(
+            Uuid.withValue("76f3fe0d-4003-4fc4-803a-8801ee804bed"), Value.email(), ticketsA);
     var concertB =
         aConcert().withId("9101c9a0-0b8f-4dc1-8600-b4881963803f").withTicketsCount(2).build();
-    var ticketsB = concertB.availableTickets(quantity);
+    var ticketsB = concertB.reserveTickets(quantity);
     var orderB =
-        concertB.placeOrder(
-            Uuid.withValue("46425d62-f0ef-465c-930b-0124d98079aa"),
-            ticketsB,
-            Value.email(),
-            concertB.priceForTickets(ticketsB.size()));
+        Order.place(
+            Uuid.withValue("46425d62-f0ef-465c-930b-0124d98079aa"), Value.email(), ticketsB);
 
     assertEquals(orderA, orderA);
     assertNotEquals(orderA, null);

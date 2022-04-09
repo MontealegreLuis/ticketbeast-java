@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.montealegreluis.servicebuses.domainevents.DomainEvent;
 import com.montealegreluis.tickebeast.builders.Value;
+import com.montealegreluis.ticketbeast.orders.Order;
 import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -86,7 +87,7 @@ final class ConcertTest {
     var concert = aConcert().withTicketsCount(5).build();
     var moreTicketsThanAvailable = new TicketsQuantity(6);
 
-    assertThrows(NotEnoughTickets.class, () -> concert.availableTickets(moreTicketsThanAvailable));
+    assertThrows(NotEnoughTickets.class, () -> concert.reserveTickets(moreTicketsThanAvailable));
   }
 
   @Test
@@ -94,12 +95,12 @@ final class ConcertTest {
       throws NotEnoughTickets {
     var concert = aConcert().withTicketsCount(5).build();
     var quantity = new TicketsQuantity(3);
-    var tickets = concert.availableTickets(quantity);
+    var tickets = concert.reserveTickets(quantity);
     // only 2 will remain available, after ordering 3 tickets
-    concert.placeOrder(Value.id(), tickets, Value.email(), concert.priceForTickets(tickets.size()));
+    Order.place(Value.id(), Value.email(), tickets);
     var moreTicketsThanAvailable = new TicketsQuantity(3);
 
-    assertThrows(NotEnoughTickets.class, () -> concert.availableTickets(moreTicketsThanAvailable));
+    assertThrows(NotEnoughTickets.class, () -> concert.reserveTickets(moreTicketsThanAvailable));
   }
 
   @Test

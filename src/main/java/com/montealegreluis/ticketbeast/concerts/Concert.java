@@ -6,7 +6,6 @@ import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.Addition
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.SubtitleConverter;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.TitleConverter;
 import com.montealegreluis.ticketbeast.concerts.venue.Venue;
-import com.montealegreluis.ticketbeast.orders.*;
 import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -55,9 +54,6 @@ public final class Concert extends AggregateRoot implements Response {
   private Date publishedAt;
 
   @OneToMany(mappedBy = "concert", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  private Set<Order> orders;
-
-  @OneToMany(mappedBy = "concert", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private Set<Ticket> tickets;
 
   public static Concert draft(
@@ -94,7 +90,6 @@ public final class Concert extends AggregateRoot implements Response {
     this.ticketPrice = ticketPrice;
     this.venue = venue;
     this.additionalInformation = additionalInformation;
-    this.orders = new HashSet<>();
     addTickets(ticketsQuantity);
   }
 
@@ -122,6 +117,10 @@ public final class Concert extends AggregateRoot implements Response {
     return date;
   }
 
+  public Money ticketPrice() {
+    return ticketPrice;
+  }
+
   public void publish() {
     this.publishedAt = Date.from(OffsetDateTime.now(ZoneOffset.UTC).toInstant());
   }
@@ -130,22 +129,16 @@ public final class Concert extends AggregateRoot implements Response {
     return ticketPrice.multiply(quantity);
   }
 
-  public Order placeOrder(Uuid orderId, Set<Ticket> tickets, Email email, Money total) {
-    Order order = Order.place(orderId, this, email, tickets, total);
-    orders.add(order);
-    recordThat(
-        new OrderHasBeenPlaced(
-            order.id(), email, id, tickets.stream().map(Ticket::id).collect(Collectors.toList())));
-    return order;
-  }
-
-  public Set<Ticket> availableTickets(TicketsQuantity quantity) throws NotEnoughTickets {
+  public Reservation reserveTickets(TicketsQuantity quantity) throws NotEnoughTickets {
     final List<Ticket> availableTickets =
         tickets.stream().filter(Ticket::isAvailable).collect(Collectors.toList());
+
     if (availableTickets.size() < quantity.value()) {
       throw NotEnoughTickets.available(availableTickets.size(), quantity.value());
     }
-    return availableTickets.stream().skip(0).limit(quantity.value()).collect(Collectors.toSet());
+
+    return new Reservation(
+        availableTickets.stream().skip(0).limit(quantity.value()).collect(Collectors.toSet()));
   }
 
   @Override

@@ -1,4 +1,4 @@
-package com.montealegreluis.ticketbeast.adapters.jpa.repostories.concerts;
+package com.montealegreluis.ticketbeast.adapters.jpa.repositories.concerts;
 
 import com.montealegreluis.tickebeast.config.RepositoriesConfiguration;
 import com.montealegreluis.tickebeast.contracttests.ConcertsContractTest;
@@ -12,7 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 @ActiveProfiles("test")
 @EntityScan("com.montealegreluis.ticketbeast")
 @ContextConfiguration(classes = {RepositoriesConfiguration.class})
-@SpringBootTest(classes = {ConcertsRepository.class, JpaConcerts.class})
+@SpringBootTest(classes = {ConcertsRepository.class, ConcertsJpaRepository.class})
 final class ConcertsRepositoryTest extends ConcertsContractTest {
   @Autowired ConcertsRepository concerts;
 

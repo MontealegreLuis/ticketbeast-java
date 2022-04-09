@@ -45,6 +45,10 @@ public final class Ticket {
     return order == null;
   }
 
+  public Money price() {
+    return concert.ticketPrice();
+  }
+
   public Identifier id() {
     return id;
   }

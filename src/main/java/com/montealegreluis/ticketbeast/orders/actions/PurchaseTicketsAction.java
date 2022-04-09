@@ -4,20 +4,27 @@ import com.montealegreluis.servicebuses.Command;
 import com.montealegreluis.servicebuses.commandbus.CommandHandler;
 import com.montealegreluis.servicebuses.domainevents.EventBus;
 import com.montealegreluis.ticketbeast.concerts.*;
+import com.montealegreluis.ticketbeast.orders.Order;
+import com.montealegreluis.ticketbeast.orders.Orders;
 import com.montealegreluis.ticketbeast.payments.PaymentFailed;
 import com.montealegreluis.ticketbeast.payments.PaymentGateway;
 import java.time.Clock;
-import java.util.Set;
 
 @Command
 public final class PurchaseTicketsAction implements CommandHandler<PurchaseTicketsInput> {
+  private final Orders orders;
   private final Concerts concerts;
   private final PaymentGateway payments;
   private final EventBus eventBus;
   private final Clock clock;
 
   public PurchaseTicketsAction(
-      Concerts concerts, PaymentGateway payments, EventBus eventBus, Clock clock) {
+      final Orders orders,
+      final Concerts concerts,
+      final PaymentGateway payments,
+      final EventBus eventBus,
+      final Clock clock) {
+    this.orders = orders;
     this.concerts = concerts;
     this.payments = payments;
     this.eventBus = eventBus;
@@ -25,19 +32,18 @@ public final class PurchaseTicketsAction implements CommandHandler<PurchaseTicke
   }
 
   @Override
-  public void execute(PurchaseTicketsInput input)
+  public void execute(final PurchaseTicketsInput input)
       throws UnknownConcert, NotEnoughTickets, PaymentFailed {
 
     final Concert concert = concerts.matching(input.criteria(clock.instant()));
 
-    final Set<Ticket> tickets = concert.availableTickets(input.quantity());
+    final Reservation reservation = concert.reserveTickets(input.quantity());
 
-    final Money ticketsPrice = concert.priceForTickets(tickets.size());
-    payments.charge(ticketsPrice, input.token());
+    payments.charge(reservation.cost(), input.token());
 
-    concert.placeOrder(input.orderId(), tickets, input.email(), ticketsPrice);
+    final Order order = Order.place(input.orderId(), input.email(), reservation);
 
-    concerts.save(concert);
-    eventBus.dispatch(concert.events());
+    orders.save(order);
+    eventBus.dispatch(order.events());
   }
 }

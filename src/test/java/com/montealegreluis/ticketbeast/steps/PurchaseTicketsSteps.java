@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.montealegreluis.servicebuses.fakes.domainevents.FakeEventBus;
 import com.montealegreluis.tickebeast.builders.Random;
 import com.montealegreluis.tickebeast.fakes.concerts.InMemoryConcerts;
+import com.montealegreluis.tickebeast.fakes.orders.InMemoryOrders;
 import com.montealegreluis.tickebeast.fakes.payments.FakePaymentGateway;
 import com.montealegreluis.ticketbeast.concerts.*;
 import com.montealegreluis.ticketbeast.orders.actions.PurchaseTicketsAction;
@@ -85,5 +86,6 @@ public final class PurchaseTicketsSteps {
   private final FakeEventBus eventBus = new FakeEventBus();
   private final Instant now = Instant.parse("2022-02-07T00:00:00.00Z");
   private final PurchaseTicketsAction action =
-      new PurchaseTicketsAction(concerts, payments, eventBus, Clock.fixed(now, ZoneId.of("UTC")));
+      new PurchaseTicketsAction(
+          new InMemoryOrders(), concerts, payments, eventBus, Clock.fixed(now, ZoneId.of("UTC")));
 }
