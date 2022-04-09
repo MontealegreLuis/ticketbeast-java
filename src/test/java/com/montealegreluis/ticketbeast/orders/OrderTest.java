@@ -7,19 +7,25 @@ import com.montealegreluis.tickebeast.builders.Value;
 import com.montealegreluis.ticketbeast.concerts.NotEnoughTickets;
 import com.montealegreluis.ticketbeast.concerts.TicketsQuantity;
 import com.montealegreluis.ticketbeast.shared.Uuid;
+import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 final class OrderTest {
   @Test
   void it_can_be_placed() throws NotEnoughTickets {
-    var id = "ac401a00-2f4b-4be1-9b1b-27896335b279";
+    var id = Uuid.withValue("ac401a00-2f4b-4be1-9b1b-27896335b279");
+    var email = Value.email();
     var concert = aConcert().withTicketsCount(2).build();
     var quantity = new TicketsQuantity(2);
-    var tickets = concert.reserveTickets(quantity);
-    var order = Order.place(Uuid.withValue(id), Value.email(), tickets);
+    var reservation = concert.reserveTickets(quantity);
+    var order = Order.place(id, email, reservation);
 
     assertNotNull(order);
-    assertEquals(Uuid.withValue(id), order.id());
+    assertEquals(id, order.id());
+    var tickets = new ArrayList<>(reservation.tickets());
+    assertEquals(2, tickets.size());
+    assertFalse(tickets.get(0).isAvailable());
+    assertFalse(tickets.get(1).isAvailable());
   }
 
   @Test

@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.montealegreluis.servicebuses.domainevents.DomainEvent;
 import com.montealegreluis.tickebeast.builders.Value;
-import com.montealegreluis.ticketbeast.orders.Order;
 import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -97,7 +96,6 @@ final class ConcertTest {
     var quantity = new TicketsQuantity(3);
     var tickets = concert.reserveTickets(quantity);
     // only 2 will remain available, after ordering 3 tickets
-    Order.place(Value.id(), Value.email(), tickets);
     var moreTicketsThanAvailable = new TicketsQuantity(3);
 
     assertThrows(NotEnoughTickets.class, () -> concert.reserveTickets(moreTicketsThanAvailable));

@@ -44,4 +44,11 @@ final class MoneyTest {
 
     assertThrows(IllegalArgumentException.class, () -> twoPesos.add(twoDollars));
   }
+
+  @Test
+  void it_has_a_text_representation() {
+    var money = Money.of(3325, "USD");
+
+    assertEquals("33.25 USD", money.toString());
+  }
 }

@@ -41,4 +41,9 @@ public final class Money {
 
     return Money.of(amount + anotherMoney.amount, "USD");
   }
+
+  @Override
+  public String toString() {
+    return String.format("%.2f %s", (float) amount / 100, currency.value());
+  }
 }

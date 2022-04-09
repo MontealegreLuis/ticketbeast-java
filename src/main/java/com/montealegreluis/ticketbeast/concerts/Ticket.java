@@ -3,6 +3,9 @@ package com.montealegreluis.ticketbeast.concerts;
 import com.montealegreluis.servicebuses.domainevents.Identifier;
 import com.montealegreluis.ticketbeast.orders.Order;
 import com.montealegreluis.ticketbeast.shared.Uuid;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.*;
 import lombok.AccessLevel;
@@ -28,6 +31,8 @@ public final class Ticket {
   @JoinColumn(name = "concert_id", nullable = false)
   private Concert concert;
 
+  private Date reservedAt;
+
   static Ticket forConcert(Uuid id, Concert concert) {
     return new Ticket(id, concert);
   }
@@ -42,7 +47,7 @@ public final class Ticket {
   }
 
   public boolean isAvailable() {
-    return order == null;
+    return order == null && reservedAt == null;
   }
 
   public Money price() {
@@ -59,6 +64,10 @@ public final class Ticket {
     if (o == null || this.getClass() != o.getClass()) return false;
     Ticket ticket = (Ticket) o;
     return id != null && Objects.equals(id, ticket.id);
+  }
+
+  public void reserve() {
+    reservedAt = Date.from(OffsetDateTime.now(ZoneOffset.UTC).toInstant());
   }
 
   @Override
