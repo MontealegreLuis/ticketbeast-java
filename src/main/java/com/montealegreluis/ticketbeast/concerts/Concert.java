@@ -6,6 +6,8 @@ import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.Addition
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.SubtitleConverter;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.TitleConverter;
 import com.montealegreluis.ticketbeast.concerts.venue.Venue;
+import com.montealegreluis.ticketbeast.orders.Email;
+import com.montealegreluis.ticketbeast.orders.Reservation;
 import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -129,7 +131,7 @@ public final class Concert extends AggregateRoot implements Response {
     return ticketPrice.multiply(quantity);
   }
 
-  public Reservation reserveTickets(TicketsQuantity quantity) throws NotEnoughTickets {
+  public Reservation reserveTickets(TicketsQuantity quantity, Email email) throws NotEnoughTickets {
     final List<Ticket> availableTickets =
         tickets.stream().filter(Ticket::isAvailable).collect(Collectors.toList());
 
@@ -138,7 +140,8 @@ public final class Concert extends AggregateRoot implements Response {
     }
 
     return new Reservation(
-        availableTickets.stream().skip(0).limit(quantity.value()).collect(Collectors.toSet()));
+        availableTickets.stream().skip(0).limit(quantity.value()).collect(Collectors.toSet()),
+        email);
   }
 
   @Override

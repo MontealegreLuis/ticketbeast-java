@@ -86,7 +86,9 @@ final class ConcertTest {
     var concert = aConcert().withTicketsCount(5).build();
     var moreTicketsThanAvailable = new TicketsQuantity(6);
 
-    assertThrows(NotEnoughTickets.class, () -> concert.reserveTickets(moreTicketsThanAvailable));
+    assertThrows(
+        NotEnoughTickets.class,
+        () -> concert.reserveTickets(moreTicketsThanAvailable, Value.email()));
   }
 
   @Test
@@ -94,11 +96,13 @@ final class ConcertTest {
       throws NotEnoughTickets {
     var concert = aConcert().withTicketsCount(5).build();
     var quantity = new TicketsQuantity(3);
-    var tickets = concert.reserveTickets(quantity);
+    concert.reserveTickets(quantity, Value.email());
     // only 2 will remain available, after ordering 3 tickets
     var moreTicketsThanAvailable = new TicketsQuantity(3);
 
-    assertThrows(NotEnoughTickets.class, () -> concert.reserveTickets(moreTicketsThanAvailable));
+    assertThrows(
+        NotEnoughTickets.class,
+        () -> concert.reserveTickets(moreTicketsThanAvailable, Value.email()));
   }
 
   @Test

@@ -3,7 +3,6 @@ package com.montealegreluis.ticketbeast.orders;
 import com.montealegreluis.servicebuses.domainevents.AggregateRoot;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.EmailConverter;
 import com.montealegreluis.ticketbeast.concerts.Money;
-import com.montealegreluis.ticketbeast.concerts.Reservation;
 import com.montealegreluis.ticketbeast.concerts.Ticket;
 import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.util.Objects;
@@ -38,21 +37,19 @@ public final class Order extends AggregateRoot {
   @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private Set<Ticket> tickets;
 
-  public static Order place(Uuid orderId, Email email, Reservation reservation) {
-    final Order order = new Order(orderId, email, reservation);
+  public static Order place(Uuid orderId, Email email, Set<Ticket> tickets, Money total) {
+    final Order order = new Order(orderId, email, tickets, total);
     order.recordThat(
         new OrderHasBeenPlaced(
-            order.id,
-            email,
-            reservation.tickets().stream().map(Ticket::id).collect(Collectors.toList())));
+            order.id, email, tickets.stream().map(Ticket::id).collect(Collectors.toList())));
     return order;
   }
 
-  private Order(Uuid id, Email email, Reservation reservation) {
+  private Order(Uuid id, Email email, Set<Ticket> tickets, Money total) {
     this.id = id;
     this.email = email;
-    addTickets(reservation.tickets());
-    this.total = reservation.cost();
+    addTickets(tickets);
+    this.total = total;
   }
 
   private void addTickets(Set<Ticket> tickets) {

@@ -18,8 +18,8 @@ public class InMemoryOrdersTest {
     var concert = aConcert().withTicketsCount(quantity.value()).build();
     concerts.save(concert);
     var orderId = Value.id();
-    var tickets = concert.reserveTickets(quantity);
-    var order = Order.place(orderId, Value.email(), tickets);
+    var reservation = concert.reserveTickets(quantity, Value.email());
+    var order = reservation.complete(orderId);
 
     orders.save(order);
 
