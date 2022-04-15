@@ -6,4 +6,8 @@ public abstract class InvalidAction extends DomainException {
   public InvalidAction(String message) {
     super(message);
   }
+
+  public InvalidAction(String message, Throwable cause) {
+    super(message, cause);
+  }
 }

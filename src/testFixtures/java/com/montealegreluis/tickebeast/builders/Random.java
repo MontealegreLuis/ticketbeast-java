@@ -32,4 +32,8 @@ public final class Random {
   public static String email() {
     return faker.internet().emailAddress();
   }
+
+  public static long amount() {
+    return faker.number().numberBetween(8000, 50000);
+  }
 }

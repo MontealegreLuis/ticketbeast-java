@@ -7,12 +7,12 @@ import com.montealegreluis.ticketbeast.payments.PaymentToken;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FakePaymentGateway implements PaymentGateway {
+public final class FakePaymentGateway implements PaymentGateway {
   public static final PaymentToken VALID_TOKEN = new PaymentToken("a-valid-token");
   private final List<Money> charges = new ArrayList<>();
 
   @Override
-  public void charge(Money amount, PaymentToken token) throws PaymentFailed {
+  public void charge(final Money amount, final PaymentToken token) throws PaymentFailed {
     if (!VALID_TOKEN.equals(token)) throw PaymentFailed.forTransactionWith(token);
     charges.add(amount);
   }

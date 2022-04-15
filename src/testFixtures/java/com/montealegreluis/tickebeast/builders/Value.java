@@ -1,10 +1,7 @@
 package com.montealegreluis.tickebeast.builders;
 
 import com.github.javafaker.Faker;
-import com.montealegreluis.ticketbeast.concerts.AdditionalInformation;
-import com.montealegreluis.ticketbeast.concerts.Subtitle;
-import com.montealegreluis.ticketbeast.concerts.TicketsQuantity;
-import com.montealegreluis.ticketbeast.concerts.Title;
+import com.montealegreluis.ticketbeast.concerts.*;
 import com.montealegreluis.ticketbeast.orders.Email;
 import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.util.Date;
@@ -45,5 +42,9 @@ public final class Value {
 
   public static Email email() {
     return new Email(Random.email());
+  }
+
+  public static Money amount() {
+    return Money.of(Random.amount(), "USD");
   }
 }
