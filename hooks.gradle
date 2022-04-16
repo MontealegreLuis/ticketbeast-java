@@ -1,4 +1,6 @@
 task createStripeConfiguration(type: Copy) {
+  inputs.file file('stripe.properties')
+  outputs.dir 'src/testFixtures/resources'
   from 'stripe.properties'
   into 'src/testFixtures/resources'
 }
