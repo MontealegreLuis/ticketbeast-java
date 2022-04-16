@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-./gradlew verGJF --daemon && ./gradlew test --daemon && ./gradlew cucumber --daemon
+./gradlew verGJF --daemon && ./gradlew test -DexcludeTags='slow' --daemon && ./gradlew cucumber --daemon

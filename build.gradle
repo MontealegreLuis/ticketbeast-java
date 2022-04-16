@@ -103,7 +103,10 @@ task cucumber() {
 }
 
 test {
-    useJUnitPlatform()
+    String tags = System.getProperty('excludeTags')
+      ? System.getProperty('excludeTags')
+      : 'none'
+    useJUnitPlatform({ excludeTags tags })
     finalizedBy("jacocoTestReport")
 }
 
