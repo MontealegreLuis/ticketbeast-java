@@ -1,5 +1,4 @@
 .gradle
 build
 node_modules
-src/testFixtures/resources/stripe.properties
 .env

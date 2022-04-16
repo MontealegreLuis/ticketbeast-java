@@ -1,5 +1,13 @@
-task configureGitHooks(type: Exec) {
-  commandLine "npm", "install", "--only=prod"
+task createStripeConfiguration(type: Copy) {
+  from 'stripe.properties'
+  into 'src/testFixtures/resources'
 }
 
-assemble.dependsOn configureGitHooks
+task configureGitHooks(type: Exec) {
+  inputs.file file('package-lock.json')
+  outputs.dir new File(rootDir, 'node_modules')
+  commandLine "npm", "ci", "--production", "--prefer-offline"
+}
+
+configureGitHooks.dependsOn createStripeConfiguration
+prepareKotlinBuildScriptModel.dependsOn configureGitHooks
