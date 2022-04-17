@@ -10,7 +10,9 @@ import com.montealegreluis.servicebuses.ActionException;
 import com.montealegreluis.servicebuses.fakes.domainevents.FakeEventBus;
 import com.montealegreluis.tickebeast.builders.Random;
 import com.montealegreluis.tickebeast.builders.Value;
+import com.montealegreluis.tickebeast.contracttests.Charges;
 import com.montealegreluis.tickebeast.fakes.payments.FakePaymentGateway;
+import com.montealegreluis.tickebeast.fakes.payments.InMemoryCharges;
 import com.montealegreluis.ticketbeast.concerts.*;
 import com.montealegreluis.ticketbeast.orders.Order;
 import com.montealegreluis.ticketbeast.orders.Orders;
@@ -90,7 +92,7 @@ final class PurchaseTicketsActionTest {
 
     action.execute(input);
 
-    assertEquals(Money.of(5000, "USD"), payments.totalCharges());
+    assertEquals(5000, charges.lastChargeAmount());
     verify(orders, times(1)).save(any(Order.class));
     assertEquals(1, eventBus.dispatchedEventsCount());
   }
@@ -98,7 +100,8 @@ final class PurchaseTicketsActionTest {
   @BeforeEach
   void let() {
     var now = Instant.parse("2022-03-19T10:37:30.00Z");
-    payments = new FakePaymentGateway();
+    charges = new InMemoryCharges();
+    var payments = new FakePaymentGateway((InMemoryCharges) charges);
     concerts = mock(Concerts.class);
     orders = mock(Orders.class);
     eventBus = new FakeEventBus();
@@ -106,10 +109,10 @@ final class PurchaseTicketsActionTest {
     action = new PurchaseTicketsAction(orders, concerts, payments, eventBus, clock);
   }
 
-  private PurchaseTicketsAction action;
-  private FakePaymentGateway payments;
-  private FakeEventBus eventBus;
-  private Concerts concerts;
-  private Orders orders;
   private Clock clock;
+  private Orders orders;
+  private Charges charges;
+  private Concerts concerts;
+  private FakeEventBus eventBus;
+  private PurchaseTicketsAction action;
 }

@@ -8,6 +8,7 @@ import com.montealegreluis.tickebeast.builders.Random;
 import com.montealegreluis.tickebeast.fakes.concerts.InMemoryConcerts;
 import com.montealegreluis.tickebeast.fakes.orders.InMemoryOrders;
 import com.montealegreluis.tickebeast.fakes.payments.FakePaymentGateway;
+import com.montealegreluis.tickebeast.fakes.payments.InMemoryCharges;
 import com.montealegreluis.ticketbeast.concerts.*;
 import com.montealegreluis.ticketbeast.orders.actions.PurchaseTicketsAction;
 import com.montealegreluis.ticketbeast.orders.actions.PurchaseTicketsInput;
@@ -46,7 +47,7 @@ public final class PurchaseTicketsSteps {
 
   @Then("my payment is completed")
   public void myPaymentIsCompleted() {
-    assertEquals(concert.priceForTickets(ticketsQuantity), payments.totalCharges());
+    assertEquals(concert.priceForTickets(ticketsQuantity).getAmount(), charges.lastChargeAmount());
   }
 
   @And("my order is created successfully")
@@ -65,7 +66,7 @@ public final class PurchaseTicketsSteps {
 
   @Then("no payment should be made")
   public void noPaymentShouldNotBeMade() {
-    assertEquals(Money.of(0, "USD"), payments.totalCharges());
+    assertEquals(0, charges.lastChargeAmount());
   }
 
   @And("no order should be placed")
@@ -82,7 +83,8 @@ public final class PurchaseTicketsSteps {
   private String paymentToken = FakePaymentGateway.VALID_TOKEN.value();
   private Concert concert;
   private final Concerts concerts = new InMemoryConcerts();
-  private final FakePaymentGateway payments = new FakePaymentGateway();
+  private final InMemoryCharges charges = new InMemoryCharges();
+  private final FakePaymentGateway payments = new FakePaymentGateway(charges);
   private final FakeEventBus eventBus = new FakeEventBus();
   private final Instant now = Instant.parse("2022-02-07T00:00:00.00Z");
   private final PurchaseTicketsAction action =

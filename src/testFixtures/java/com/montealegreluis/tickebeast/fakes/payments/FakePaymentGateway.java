@@ -4,20 +4,20 @@ import com.montealegreluis.ticketbeast.concerts.Money;
 import com.montealegreluis.ticketbeast.payments.PaymentFailed;
 import com.montealegreluis.ticketbeast.payments.PaymentGateway;
 import com.montealegreluis.ticketbeast.payments.PaymentToken;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class FakePaymentGateway implements PaymentGateway {
   public static final PaymentToken VALID_TOKEN = new PaymentToken("a-valid-token");
-  private final List<Money> charges = new ArrayList<>();
+  private final InMemoryCharges charges;
+
+  public FakePaymentGateway(InMemoryCharges charges) {
+    this.charges = charges;
+  }
 
   @Override
   public void charge(final Money amount, final PaymentToken token) throws PaymentFailed {
     if (!VALID_TOKEN.equals(token)) throw PaymentFailed.forTransactionWith(token);
-    charges.add(amount);
-  }
 
-  public Money totalCharges() {
-    return charges.stream().reduce(Money.of(0, "USD"), Money::add);
+    charges.increaseChargesCount();
+    charges.setLastChargeAmount(amount.getAmount());
   }
 }
