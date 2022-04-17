@@ -10,6 +10,7 @@ import com.montealegreluis.ticketbeast.adapters.jpa.repositories.concerts.Concer
 import com.montealegreluis.ticketbeast.adapters.jpa.repositories.concerts.ConcertsRepository;
 import com.montealegreluis.ticketbeast.concerts.*;
 import com.montealegreluis.ticketbeast.orders.Orders;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
+@Tag("slow")
 @ActiveProfiles("test")
 @EntityScan("com.montealegreluis.ticketbeast")
 @ContextConfiguration(classes = {RepositoriesConfiguration.class})
