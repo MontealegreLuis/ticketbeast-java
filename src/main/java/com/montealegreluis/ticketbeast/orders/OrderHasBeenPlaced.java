@@ -10,11 +10,17 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public final class OrderHasBeenPlaced extends DomainEvent {
   private final String orderId;
+  private final String confirmationNumber;
   private final String email;
   private final List<String> ticketIds;
 
-  public OrderHasBeenPlaced(Uuid orderId, Email email, List<Identifier> ticketIds) {
+  public OrderHasBeenPlaced(
+      Uuid orderId,
+      ConfirmationNumber confirmationNumber,
+      Email email,
+      List<Identifier> ticketIds) {
     this.orderId = orderId.value();
+    this.confirmationNumber = confirmationNumber.value();
     this.email = email.value();
     this.ticketIds = ticketIds.stream().map(Object::toString).collect(Collectors.toList());
   }

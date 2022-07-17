@@ -2,6 +2,7 @@ package com.montealegreluis.tickebeast.builders;
 
 import com.github.javafaker.Faker;
 import com.montealegreluis.ticketbeast.concerts.*;
+import com.montealegreluis.ticketbeast.orders.ConfirmationNumber;
 import com.montealegreluis.ticketbeast.orders.Email;
 import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.util.Date;
@@ -46,5 +47,9 @@ public final class Value {
 
   public static Money amount() {
     return Money.of(Random.amount(), "USD");
+  }
+
+  public static ConfirmationNumber confirmationNumber() {
+    return ConfirmationNumber.generate();
   }
 }

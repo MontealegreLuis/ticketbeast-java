@@ -18,7 +18,8 @@ final class OrderTest {
     var concert = aConcert().withTicketsCount(2).build();
     var quantity = new TicketsQuantity(2);
     var reservation = concert.reserveTickets(quantity, email);
-    var order = reservation.complete(id);
+    var confirmationNumber = Value.confirmationNumber();
+    var order = reservation.complete(id, confirmationNumber);
 
     assertNotNull(order);
     assertEquals(id, order.id());
@@ -34,11 +35,15 @@ final class OrderTest {
     var concertA =
         aConcert().withId("a6609f9a-85fa-43b9-898c-bd3b34c87191").withTicketsCount(2).build();
     var reservationA = concertA.reserveTickets(quantity, Value.email());
-    var orderA = reservationA.complete(Uuid.withValue("76f3fe0d-4003-4fc4-803a-8801ee804bed"));
+    var orderA =
+        reservationA.complete(
+            Uuid.withValue("76f3fe0d-4003-4fc4-803a-8801ee804bed"), Value.confirmationNumber());
     var concertB =
         aConcert().withId("9101c9a0-0b8f-4dc1-8600-b4881963803f").withTicketsCount(2).build();
     var reservationB = concertB.reserveTickets(quantity, Value.email());
-    var orderB = reservationB.complete(Uuid.withValue("46425d62-f0ef-465c-930b-0124d98079aa"));
+    var orderB =
+        reservationB.complete(
+            Uuid.withValue("46425d62-f0ef-465c-930b-0124d98079aa"), Value.confirmationNumber());
 
     assertEquals(orderA, orderA);
     assertNotEquals(orderA, null);

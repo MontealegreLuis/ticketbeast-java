@@ -17,7 +17,7 @@ final class EmailConverterTest {
   }
 
   @Test
-  void it_converts_database_value_to_title() {
+  void it_converts_database_value_to_email() {
     var emailAddress = "example@example.com";
     var email = new Email(emailAddress);
 

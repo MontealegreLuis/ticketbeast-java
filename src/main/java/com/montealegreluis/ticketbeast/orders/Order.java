@@ -1,6 +1,7 @@
 package com.montealegreluis.ticketbeast.orders;
 
 import com.montealegreluis.servicebuses.domainevents.AggregateRoot;
+import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.ConfirmationNumberConverter;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.EmailConverter;
 import com.montealegreluis.ticketbeast.concerts.Money;
 import com.montealegreluis.ticketbeast.concerts.Ticket;
@@ -24,6 +25,9 @@ public final class Order extends AggregateRoot {
   })
   private Uuid id;
 
+  @Convert(converter = ConfirmationNumberConverter.class)
+  private ConfirmationNumber confirmationNumber;
+
   @Convert(converter = EmailConverter.class)
   private Email email;
 
@@ -37,16 +41,30 @@ public final class Order extends AggregateRoot {
   @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private Set<Ticket> tickets;
 
-  public static Order place(Uuid orderId, Email email, Set<Ticket> tickets, Money total) {
-    final Order order = new Order(orderId, email, tickets, total);
+  public static Order place(
+      Uuid orderId,
+      ConfirmationNumber confirmationNumber,
+      Email email,
+      Set<Ticket> tickets,
+      Money total) {
+    final Order order = new Order(orderId, confirmationNumber, email, tickets, total);
     order.recordThat(
         new OrderHasBeenPlaced(
-            order.id, email, tickets.stream().map(Ticket::id).collect(Collectors.toList())));
+            order.id,
+            confirmationNumber,
+            email,
+            tickets.stream().map(Ticket::id).collect(Collectors.toList())));
     return order;
   }
 
-  private Order(Uuid id, Email email, Set<Ticket> tickets, Money total) {
+  private Order(
+      Uuid id,
+      ConfirmationNumber confirmationNumber,
+      Email email,
+      Set<Ticket> tickets,
+      Money total) {
     this.id = id;
+    this.confirmationNumber = confirmationNumber;
     this.email = email;
     addTickets(tickets);
     this.total = total;

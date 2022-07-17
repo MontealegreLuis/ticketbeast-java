@@ -30,7 +30,7 @@ public final class Reservation {
     return total;
   }
 
-  public Order complete(Uuid orderId) {
-    return Order.place(orderId, email, tickets, total);
+  public Order complete(Uuid orderId, ConfirmationNumber confirmationNumber) {
+    return Order.place(orderId, confirmationNumber, email, tickets, total);
   }
 }

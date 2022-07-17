@@ -19,7 +19,8 @@ public class InMemoryOrdersTest {
     concerts.save(concert);
     var orderId = Value.id();
     var reservation = concert.reserveTickets(quantity, Value.email());
-    var order = reservation.complete(orderId);
+    var confirmationNumber = Value.confirmationNumber();
+    var order = reservation.complete(orderId, confirmationNumber);
 
     orders.save(order);
 

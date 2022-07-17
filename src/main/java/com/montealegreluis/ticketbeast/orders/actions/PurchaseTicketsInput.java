@@ -3,6 +3,7 @@ package com.montealegreluis.ticketbeast.orders.actions;
 import com.montealegreluis.servicebuses.commandbus.Command;
 import com.montealegreluis.ticketbeast.concerts.PublishedConcertCriteria;
 import com.montealegreluis.ticketbeast.concerts.TicketsQuantity;
+import com.montealegreluis.ticketbeast.orders.ConfirmationNumber;
 import com.montealegreluis.ticketbeast.orders.Email;
 import com.montealegreluis.ticketbeast.payments.PaymentToken;
 import com.montealegreluis.ticketbeast.shared.Uuid;
@@ -15,6 +16,7 @@ public final class PurchaseTicketsInput implements Command {
   private final Email email;
   private final PaymentToken token;
   private final Uuid orderId;
+  private final ConfirmationNumber confirmationNumber;
 
   public PurchaseTicketsInput(
       final String concertId, final int quantity, String email, final String token) {
@@ -23,6 +25,7 @@ public final class PurchaseTicketsInput implements Command {
     this.email = new Email(email);
     this.token = new PaymentToken(token);
     this.orderId = Uuid.generate();
+    this.confirmationNumber = ConfirmationNumber.generate();
   }
 
   public PublishedConcertCriteria criteria(Instant now) {
@@ -43,5 +46,9 @@ public final class PurchaseTicketsInput implements Command {
 
   public Uuid orderId() {
     return orderId;
+  }
+
+  public ConfirmationNumber confirmationNumber() {
+    return confirmationNumber;
   }
 }

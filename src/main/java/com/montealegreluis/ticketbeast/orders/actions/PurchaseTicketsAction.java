@@ -40,7 +40,7 @@ public final class PurchaseTicketsAction implements CommandHandler<PurchaseTicke
 
     final Reservation reservation = concert.reserveTickets(input.quantity(), input.email());
     payments.charge(reservation.total(), input.token());
-    final Order order = reservation.complete(input.orderId());
+    final Order order = reservation.complete(input.orderId(), input.confirmationNumber());
 
     orders.save(order);
     eventBus.dispatch(order.events());
