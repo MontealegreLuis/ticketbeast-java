@@ -1,7 +1,6 @@
 package com.montealegreluis.ticketbeast.orders.actions;
 
 import static com.montealegreluis.tickebeast.builders.concerts.ConcertBuilder.aConcert;
-import static com.montealegreluis.tickebeast.fakes.payments.FakePaymentGateway.VALID_TOKEN;
 import static java.time.temporal.ChronoUnit.DAYS;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -17,6 +16,7 @@ import com.montealegreluis.ticketbeast.concerts.*;
 import com.montealegreluis.ticketbeast.orders.Order;
 import com.montealegreluis.ticketbeast.orders.Orders;
 import com.montealegreluis.ticketbeast.payments.PaymentFailed;
+import com.montealegreluis.ticketbeast.payments.PaymentToken;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -65,7 +65,7 @@ final class PurchaseTicketsActionTest {
     var moreTicketsThanAvailable = 10;
     var input =
         new PurchaseTicketsInput(
-            concertId, moreTicketsThanAvailable, Random.email(), VALID_TOKEN.value());
+            concertId, moreTicketsThanAvailable, Random.email(), token.value());
 
     assertThrows(NotEnoughTickets.class, () -> action.execute(input));
   }
@@ -87,8 +87,7 @@ final class PurchaseTicketsActionTest {
         new PublishedConcertCriteria(publishedUpcomingConcert.id(), Date.from(clock.instant()));
     when(concerts.matching(criteria)).thenReturn(publishedUpcomingConcert);
     var concertId = publishedUpcomingConcert.id().value();
-    var input =
-        new PurchaseTicketsInput(concertId, ticketsQuantity, Random.email(), VALID_TOKEN.value());
+    var input = new PurchaseTicketsInput(concertId, ticketsQuantity, Random.email(), token.value());
 
     action.execute(input);
 
@@ -101,6 +100,7 @@ final class PurchaseTicketsActionTest {
   void let() {
     var now = Instant.parse("2022-03-19T10:37:30.00Z");
     charges = new InMemoryCharges();
+    token = charges.paymentToken(charges.creditCardNumber());
     var payments = new FakePaymentGateway((InMemoryCharges) charges);
     concerts = mock(Concerts.class);
     orders = mock(Orders.class);
@@ -115,4 +115,5 @@ final class PurchaseTicketsActionTest {
   private Concerts concerts;
   private FakeEventBus eventBus;
   private PurchaseTicketsAction action;
+  private PaymentToken token;
 }

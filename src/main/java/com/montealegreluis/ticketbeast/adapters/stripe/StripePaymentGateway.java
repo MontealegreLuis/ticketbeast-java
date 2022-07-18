@@ -1,9 +1,7 @@
 package com.montealegreluis.ticketbeast.adapters.stripe;
 
 import com.montealegreluis.ticketbeast.concerts.Money;
-import com.montealegreluis.ticketbeast.payments.PaymentFailed;
-import com.montealegreluis.ticketbeast.payments.PaymentGateway;
-import com.montealegreluis.ticketbeast.payments.PaymentToken;
+import com.montealegreluis.ticketbeast.payments.*;
 import com.stripe.model.Charge;
 import com.stripe.net.RequestOptions;
 import io.vavr.control.Try;
@@ -18,12 +16,17 @@ public final class StripePaymentGateway implements PaymentGateway {
   }
 
   @Override
-  public void charge(final Money amount, final PaymentToken token) throws PaymentFailed {
+  public ProcessedCharge charge(final Money amount, final PaymentToken token) throws PaymentFailed {
     final Map<String, Object> params = new HashMap<>();
     params.put("amount", amount.getAmount());
     params.put("currency", amount.getCurrency().value());
     params.put("source", token.value());
-    Try.run(() -> Charge.create(params, requestOptions))
-        .getOrElseThrow((e) -> PaymentFailed.forTransactionWith(token, e));
+
+    final Charge charge =
+        Try.of(() -> Charge.create(params, requestOptions))
+            .getOrElseThrow((e) -> PaymentFailed.forTransactionWith(token, e));
+
+    return new ProcessedCharge(
+        amount, new LastFourDigits(charge.getPaymentMethodDetails().getCard().getLast4()));
   }
 }

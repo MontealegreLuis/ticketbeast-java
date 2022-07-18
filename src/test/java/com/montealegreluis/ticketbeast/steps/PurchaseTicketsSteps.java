@@ -26,6 +26,7 @@ import java.time.temporal.ChronoUnit;
 public final class PurchaseTicketsSteps {
   @Given("a concert with {int} tickets available")
   public void aConcertWithTicketsAvailable(int ticketsCount) {
+    paymentToken = charges.paymentToken(charges.creditCardNumber()).value();
     concert = aConcert().withTicketsCount(ticketsCount).build();
     concert.publish();
     concerts.save(concert);
@@ -57,6 +58,7 @@ public final class PurchaseTicketsSteps {
 
   @Given("a past concert")
   public void aPastConcert() {
+    paymentToken = charges.paymentToken(charges.creditCardNumber()).value();
     var fiveDaysAgo = now.minus(5, ChronoUnit.DAYS);
     concert = aConcert().tobeHeldOnDate(Date.from(fiveDaysAgo)).build();
     concert.publish();
@@ -80,7 +82,7 @@ public final class PurchaseTicketsSteps {
   }
 
   private int ticketsQuantity;
-  private String paymentToken = FakePaymentGateway.VALID_TOKEN.value();
+  private String paymentToken;
   private Concert concert;
   private final Concerts concerts = new InMemoryConcerts();
   private final InMemoryCharges charges = new InMemoryCharges();

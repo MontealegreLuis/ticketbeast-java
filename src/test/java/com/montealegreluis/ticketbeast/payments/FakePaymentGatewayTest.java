@@ -7,11 +7,6 @@ import com.montealegreluis.tickebeast.fakes.payments.InMemoryCharges;
 
 final class FakePaymentGatewayTest extends PaymentGatewayContractTest {
   @Override
-  protected PaymentToken validToken() {
-    return FakePaymentGateway.VALID_TOKEN;
-  }
-
-  @Override
   protected Charges charges() {
     charges = new InMemoryCharges();
     return charges;

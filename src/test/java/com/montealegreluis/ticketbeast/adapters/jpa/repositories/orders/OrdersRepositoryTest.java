@@ -10,6 +10,8 @@ import com.montealegreluis.ticketbeast.adapters.jpa.repositories.concerts.Concer
 import com.montealegreluis.ticketbeast.adapters.jpa.repositories.concerts.ConcertsRepository;
 import com.montealegreluis.ticketbeast.concerts.*;
 import com.montealegreluis.ticketbeast.orders.Orders;
+import com.montealegreluis.ticketbeast.payments.LastFourDigits;
+import com.montealegreluis.ticketbeast.payments.ProcessedCharge;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,8 @@ final class OrdersRepositoryTest {
     var orderId = Value.id();
     var reservation = concert.reserveTickets(quantity, Value.email());
     var confirmationNumber = Value.confirmationNumber();
-    var order = reservation.complete(orderId, confirmationNumber);
+    var charge = new ProcessedCharge(reservation.total(), new LastFourDigits("4242"));
+    var order = reservation.complete(orderId, confirmationNumber, charge);
 
     orders.save(order);
 

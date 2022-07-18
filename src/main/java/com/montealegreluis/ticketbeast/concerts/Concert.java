@@ -139,9 +139,10 @@ public final class Concert extends AggregateRoot implements Response {
       throw NotEnoughTickets.available(availableTickets.size(), quantity.value());
     }
 
-    return new Reservation(
-        availableTickets.stream().skip(0).limit(quantity.value()).collect(Collectors.toSet()),
-        email);
+    final Set<Ticket> reservedTickets =
+        availableTickets.stream().skip(0).limit(quantity.value()).collect(Collectors.toSet());
+
+    return new Reservation(reservedTickets, email);
   }
 
   @Override

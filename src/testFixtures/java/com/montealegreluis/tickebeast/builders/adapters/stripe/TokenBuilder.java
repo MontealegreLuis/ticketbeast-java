@@ -9,6 +9,7 @@ import java.util.Map;
 public final class TokenBuilder {
   private RequestOptions requestOptions;
   private int creditCardYear;
+  private String creditCardNumber = "4242424242424242";
 
   public static TokenBuilder aToken() {
     return new TokenBuilder();
@@ -24,9 +25,14 @@ public final class TokenBuilder {
     return this;
   }
 
+  public TokenBuilder withCreditCardNumber(String creditCardNumber) {
+    this.creditCardNumber = creditCardNumber;
+    return this;
+  }
+
   public Token build() throws StripeException {
     var card = new HashMap<>();
-    card.put("number", "4242424242424242");
+    card.put("number", creditCardNumber);
     card.put("exp_month", 1);
     card.put("exp_year", creditCardYear);
     card.put("cvc", "123");

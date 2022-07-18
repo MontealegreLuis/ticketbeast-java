@@ -3,8 +3,11 @@ package com.montealegreluis.ticketbeast.orders;
 import com.montealegreluis.servicebuses.domainevents.AggregateRoot;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.ConfirmationNumberConverter;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.EmailConverter;
+import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.LastFourDigitsConverter;
 import com.montealegreluis.ticketbeast.concerts.Money;
 import com.montealegreluis.ticketbeast.concerts.Ticket;
+import com.montealegreluis.ticketbeast.payments.LastFourDigits;
+import com.montealegreluis.ticketbeast.payments.ProcessedCharge;
 import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.util.Objects;
 import java.util.Set;
@@ -38,6 +41,9 @@ public final class Order extends AggregateRoot {
   })
   private Money total;
 
+  @Convert(converter = LastFourDigitsConverter.class)
+  private LastFourDigits cardLast4Digits;
+
   @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private Set<Ticket> tickets;
 
@@ -46,8 +52,8 @@ public final class Order extends AggregateRoot {
       ConfirmationNumber confirmationNumber,
       Email email,
       Set<Ticket> tickets,
-      Money total) {
-    final Order order = new Order(orderId, confirmationNumber, email, tickets, total);
+      ProcessedCharge charge) {
+    final Order order = new Order(orderId, confirmationNumber, email, tickets, charge);
     order.recordThat(
         new OrderHasBeenPlaced(
             order.id,
@@ -62,12 +68,13 @@ public final class Order extends AggregateRoot {
       ConfirmationNumber confirmationNumber,
       Email email,
       Set<Ticket> tickets,
-      Money total) {
+      ProcessedCharge charge) {
     this.id = id;
     this.confirmationNumber = confirmationNumber;
     this.email = email;
     addTickets(tickets);
-    this.total = total;
+    this.total = charge.amount();
+    this.cardLast4Digits = charge.cardLast4Digits();
   }
 
   private void addTickets(Set<Ticket> tickets) {

@@ -9,6 +9,7 @@ import com.montealegreluis.ticketbeast.orders.Orders;
 import com.montealegreluis.ticketbeast.orders.Reservation;
 import com.montealegreluis.ticketbeast.payments.PaymentFailed;
 import com.montealegreluis.ticketbeast.payments.PaymentGateway;
+import com.montealegreluis.ticketbeast.payments.ProcessedCharge;
 import java.time.Clock;
 
 @Command
@@ -39,8 +40,8 @@ public final class PurchaseTicketsAction implements CommandHandler<PurchaseTicke
     final Concert concert = concerts.matching(input.criteria(clock.instant()));
 
     final Reservation reservation = concert.reserveTickets(input.quantity(), input.email());
-    payments.charge(reservation.total(), input.token());
-    final Order order = reservation.complete(input.orderId(), input.confirmationNumber());
+    final ProcessedCharge charge = payments.charge(reservation.total(), input.token());
+    final Order order = reservation.complete(input.orderId(), input.confirmationNumber(), charge);
 
     orders.save(order);
     eventBus.dispatch(order.events());

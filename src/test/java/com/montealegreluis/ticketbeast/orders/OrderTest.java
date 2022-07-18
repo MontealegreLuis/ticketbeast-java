@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.montealegreluis.tickebeast.builders.Value;
 import com.montealegreluis.ticketbeast.concerts.NotEnoughTickets;
 import com.montealegreluis.ticketbeast.concerts.TicketsQuantity;
+import com.montealegreluis.ticketbeast.payments.LastFourDigits;
+import com.montealegreluis.ticketbeast.payments.ProcessedCharge;
 import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
@@ -19,7 +21,8 @@ final class OrderTest {
     var quantity = new TicketsQuantity(2);
     var reservation = concert.reserveTickets(quantity, email);
     var confirmationNumber = Value.confirmationNumber();
-    var order = reservation.complete(id, confirmationNumber);
+    var charge = new ProcessedCharge(reservation.total(), new LastFourDigits("4242"));
+    var order = reservation.complete(id, confirmationNumber, charge);
 
     assertNotNull(order);
     assertEquals(id, order.id());
@@ -35,15 +38,21 @@ final class OrderTest {
     var concertA =
         aConcert().withId("a6609f9a-85fa-43b9-898c-bd3b34c87191").withTicketsCount(2).build();
     var reservationA = concertA.reserveTickets(quantity, Value.email());
+    var chargeA = new ProcessedCharge(reservationA.total(), new LastFourDigits("4242"));
     var orderA =
         reservationA.complete(
-            Uuid.withValue("76f3fe0d-4003-4fc4-803a-8801ee804bed"), Value.confirmationNumber());
+            Uuid.withValue("76f3fe0d-4003-4fc4-803a-8801ee804bed"),
+            Value.confirmationNumber(),
+            chargeA);
     var concertB =
         aConcert().withId("9101c9a0-0b8f-4dc1-8600-b4881963803f").withTicketsCount(2).build();
     var reservationB = concertB.reserveTickets(quantity, Value.email());
+    var chargeB = new ProcessedCharge(reservationA.total(), new LastFourDigits("2727"));
     var orderB =
         reservationB.complete(
-            Uuid.withValue("46425d62-f0ef-465c-930b-0124d98079aa"), Value.confirmationNumber());
+            Uuid.withValue("46425d62-f0ef-465c-930b-0124d98079aa"),
+            Value.confirmationNumber(),
+            chargeB);
 
     assertEquals(orderA, orderA);
     assertNotEquals(orderA, null);

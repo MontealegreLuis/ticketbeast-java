@@ -2,6 +2,7 @@ package com.montealegreluis.ticketbeast.orders;
 
 import com.montealegreluis.ticketbeast.concerts.Money;
 import com.montealegreluis.ticketbeast.concerts.Ticket;
+import com.montealegreluis.ticketbeast.payments.ProcessedCharge;
 import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.util.Set;
 
@@ -30,7 +31,8 @@ public final class Reservation {
     return total;
   }
 
-  public Order complete(Uuid orderId, ConfirmationNumber confirmationNumber) {
-    return Order.place(orderId, confirmationNumber, email, tickets, total);
+  public Order complete(
+      Uuid orderId, ConfirmationNumber confirmationNumber, ProcessedCharge charge) {
+    return Order.place(orderId, confirmationNumber, email, tickets, charge);
   }
 }

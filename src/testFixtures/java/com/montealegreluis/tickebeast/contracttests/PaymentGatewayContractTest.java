@@ -4,9 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.montealegreluis.tickebeast.builders.Value;
-import com.montealegreluis.ticketbeast.payments.PaymentFailed;
-import com.montealegreluis.ticketbeast.payments.PaymentGateway;
-import com.montealegreluis.ticketbeast.payments.PaymentToken;
+import com.montealegreluis.ticketbeast.payments.*;
 import org.junit.jupiter.api.Test;
 
 public abstract class PaymentGatewayContractTest {
@@ -14,13 +12,17 @@ public abstract class PaymentGatewayContractTest {
   void it_completes_a_charge_with_a_valid_token() throws PaymentFailed {
     var charges = charges();
     var payments = payments();
-    var token = validToken();
+    var creditCardNumber = charges.creditCardNumber();
+    var cardLast4Digits =
+        new LastFourDigits(creditCardNumber.substring(creditCardNumber.length() - 4));
+    var token = charges.paymentToken(creditCardNumber);
     var amount = Value.amount();
 
-    payments.charge(amount, token);
+    var charge = payments.charge(amount, token);
 
     assertEquals(1, charges.newChargesCount());
     assertEquals(charges.lastChargeAmount(), amount.getAmount());
+    assertEquals(new ProcessedCharge(amount, cardLast4Digits), charge);
   }
 
   @Test
@@ -33,8 +35,6 @@ public abstract class PaymentGatewayContractTest {
 
     assertEquals(0, charges.newChargesCount());
   }
-
-  protected abstract PaymentToken validToken();
 
   protected abstract Charges charges();
 
