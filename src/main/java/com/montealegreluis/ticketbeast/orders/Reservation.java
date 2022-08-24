@@ -1,5 +1,6 @@
 package com.montealegreluis.ticketbeast.orders;
 
+import com.montealegreluis.ticketbeast.concerts.CodesGenerator;
 import com.montealegreluis.ticketbeast.concerts.Money;
 import com.montealegreluis.ticketbeast.concerts.Ticket;
 import com.montealegreluis.ticketbeast.payments.ProcessedCharge;
@@ -12,7 +13,7 @@ public final class Reservation {
   private final Money total;
   private final Email email;
 
-  public Reservation(final Set<Ticket> tickets, Email email) {
+  public Reservation(final Set<Ticket> tickets, final Email email) {
     this.email = email;
     tickets.forEach(Ticket::reserve);
     this.tickets = tickets;
@@ -32,7 +33,10 @@ public final class Reservation {
   }
 
   public Order complete(
-      Uuid orderId, ConfirmationNumber confirmationNumber, ProcessedCharge charge) {
-    return Order.place(orderId, confirmationNumber, email, tickets, charge);
+      final Uuid orderId,
+      final ConfirmationNumber confirmationNumber,
+      final ProcessedCharge charge,
+      final CodesGenerator generator) {
+    return Order.place(orderId, confirmationNumber, email, tickets, charge, generator);
   }
 }

@@ -9,6 +9,7 @@ import com.montealegreluis.tickebeast.fakes.concerts.InMemoryConcerts;
 import com.montealegreluis.tickebeast.fakes.orders.InMemoryOrders;
 import com.montealegreluis.tickebeast.fakes.payments.FakePaymentGateway;
 import com.montealegreluis.tickebeast.fakes.payments.InMemoryCharges;
+import com.montealegreluis.ticketbeast.adapters.hashids.HashIdsCodesGenerator;
 import com.montealegreluis.ticketbeast.concerts.*;
 import com.montealegreluis.ticketbeast.orders.actions.PurchaseTicketsAction;
 import com.montealegreluis.ticketbeast.orders.actions.PurchaseTicketsInput;
@@ -91,5 +92,10 @@ public final class PurchaseTicketsSteps {
   private final Instant now = Instant.parse("2022-02-07T00:00:00.00Z");
   private final PurchaseTicketsAction action =
       new PurchaseTicketsAction(
-          new InMemoryOrders(), concerts, payments, eventBus, Clock.fixed(now, ZoneId.of("UTC")));
+          new InMemoryOrders(),
+          concerts,
+          payments,
+          eventBus,
+          new HashIdsCodesGenerator("a salt"),
+          Clock.fixed(now, ZoneId.of("UTC")));
 }

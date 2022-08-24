@@ -1,6 +1,11 @@
 package com.montealegreluis.ticketbeast.concerts;
 
+import static javax.persistence.AccessType.FIELD;
+import static javax.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.PROTECTED;
+
 import com.montealegreluis.servicebuses.domainevents.Identifier;
+import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.CodeConverter;
 import com.montealegreluis.ticketbeast.orders.Order;
 import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.time.OffsetDateTime;
@@ -8,13 +13,12 @@ import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.*;
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "tickets")
-@Access(AccessType.FIELD)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Access(FIELD)
+@NoArgsConstructor(access = PROTECTED)
 public final class Ticket {
   @Id
   @EmbeddedId
@@ -23,11 +27,14 @@ public final class Ticket {
   })
   private Uuid id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @Convert(converter = CodeConverter.class)
+  private Code code;
+
+  @ManyToOne(fetch = LAZY)
   @JoinColumn(name = "order_id")
   private Order order;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @ManyToOne(fetch = LAZY, optional = false)
   @JoinColumn(name = "concert_id", nullable = false)
   private Concert concert;
 
@@ -42,8 +49,9 @@ public final class Ticket {
     this.concert = concert;
   }
 
-  public void setOrder(Order order) {
+  public void claimFor(final Order order, final Long ticketNumber, final CodesGenerator generator) {
     this.order = order;
+    this.code = generator.generateCodeFor(ticketNumber);
   }
 
   public boolean isAvailable() {

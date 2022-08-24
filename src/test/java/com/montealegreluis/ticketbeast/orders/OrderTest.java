@@ -4,6 +4,7 @@ import static com.montealegreluis.tickebeast.builders.concerts.ConcertBuilder.aC
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.montealegreluis.tickebeast.builders.Value;
+import com.montealegreluis.ticketbeast.adapters.hashids.HashIdsCodesGenerator;
 import com.montealegreluis.ticketbeast.concerts.NotEnoughTickets;
 import com.montealegreluis.ticketbeast.concerts.TicketsQuantity;
 import com.montealegreluis.ticketbeast.payments.LastFourDigits;
@@ -22,7 +23,8 @@ final class OrderTest {
     var reservation = concert.reserveTickets(quantity, email);
     var confirmationNumber = Value.confirmationNumber();
     var charge = new ProcessedCharge(reservation.total(), new LastFourDigits("4242"));
-    var order = reservation.complete(id, confirmationNumber, charge);
+    var order =
+        reservation.complete(id, confirmationNumber, charge, new HashIdsCodesGenerator("a salt"));
 
     assertNotNull(order);
     assertEquals(id, order.id());
@@ -34,6 +36,7 @@ final class OrderTest {
 
   @Test
   void it_can_be_compared_to_another_order() throws NotEnoughTickets {
+    var generator = new HashIdsCodesGenerator("a salt");
     var quantity = new TicketsQuantity(2);
     var concertA =
         aConcert().withId("a6609f9a-85fa-43b9-898c-bd3b34c87191").withTicketsCount(2).build();
@@ -43,7 +46,8 @@ final class OrderTest {
         reservationA.complete(
             Uuid.withValue("76f3fe0d-4003-4fc4-803a-8801ee804bed"),
             Value.confirmationNumber(),
-            chargeA);
+            chargeA,
+            generator);
     var concertB =
         aConcert().withId("9101c9a0-0b8f-4dc1-8600-b4881963803f").withTicketsCount(2).build();
     var reservationB = concertB.reserveTickets(quantity, Value.email());
@@ -52,7 +56,8 @@ final class OrderTest {
         reservationB.complete(
             Uuid.withValue("46425d62-f0ef-465c-930b-0124d98079aa"),
             Value.confirmationNumber(),
-            chargeB);
+            chargeB,
+            generator);
 
     assertEquals(orderA, orderA);
     assertNotEquals(orderA, null);

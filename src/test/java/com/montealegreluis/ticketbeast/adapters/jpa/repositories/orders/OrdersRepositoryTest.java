@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.montealegreluis.tickebeast.builders.Value;
 import com.montealegreluis.tickebeast.config.RepositoriesConfiguration;
+import com.montealegreluis.ticketbeast.adapters.hashids.HashIdsCodesGenerator;
 import com.montealegreluis.ticketbeast.adapters.jpa.repositories.concerts.ConcertsJpaRepository;
 import com.montealegreluis.ticketbeast.adapters.jpa.repositories.concerts.ConcertsRepository;
 import com.montealegreluis.ticketbeast.concerts.*;
@@ -41,7 +42,9 @@ final class OrdersRepositoryTest {
     var reservation = concert.reserveTickets(quantity, Value.email());
     var confirmationNumber = Value.confirmationNumber();
     var charge = new ProcessedCharge(reservation.total(), new LastFourDigits("4242"));
-    var order = reservation.complete(orderId, confirmationNumber, charge);
+    var order =
+        reservation.complete(
+            orderId, confirmationNumber, charge, new HashIdsCodesGenerator("a salt"));
 
     orders.save(order);
 

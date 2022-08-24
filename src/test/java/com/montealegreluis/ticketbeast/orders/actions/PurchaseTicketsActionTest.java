@@ -12,6 +12,7 @@ import com.montealegreluis.tickebeast.builders.Value;
 import com.montealegreluis.tickebeast.contracttests.Charges;
 import com.montealegreluis.tickebeast.fakes.payments.FakePaymentGateway;
 import com.montealegreluis.tickebeast.fakes.payments.InMemoryCharges;
+import com.montealegreluis.ticketbeast.adapters.hashids.HashIdsCodesGenerator;
 import com.montealegreluis.ticketbeast.concerts.*;
 import com.montealegreluis.ticketbeast.orders.Order;
 import com.montealegreluis.ticketbeast.orders.Orders;
@@ -106,7 +107,9 @@ final class PurchaseTicketsActionTest {
     orders = mock(Orders.class);
     eventBus = new FakeEventBus();
     clock = Clock.fixed(now, ZoneId.of("UTC"));
-    action = new PurchaseTicketsAction(orders, concerts, payments, eventBus, clock);
+    action =
+        new PurchaseTicketsAction(
+            orders, concerts, payments, eventBus, new HashIdsCodesGenerator("A salt"), clock);
   }
 
   private Clock clock;

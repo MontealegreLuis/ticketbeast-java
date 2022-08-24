@@ -4,6 +4,7 @@ import com.montealegreluis.servicebuses.domainevents.AggregateRoot;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.ConfirmationNumberConverter;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.EmailConverter;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.LastFourDigitsConverter;
+import com.montealegreluis.ticketbeast.concerts.CodesGenerator;
 import com.montealegreluis.ticketbeast.concerts.Money;
 import com.montealegreluis.ticketbeast.concerts.Ticket;
 import com.montealegreluis.ticketbeast.payments.LastFourDigits;
@@ -48,12 +49,13 @@ public final class Order extends AggregateRoot {
   private Set<Ticket> tickets;
 
   public static Order place(
-      Uuid orderId,
-      ConfirmationNumber confirmationNumber,
-      Email email,
-      Set<Ticket> tickets,
-      ProcessedCharge charge) {
-    final Order order = new Order(orderId, confirmationNumber, email, tickets, charge);
+      final Uuid orderId,
+      final ConfirmationNumber confirmationNumber,
+      final Email email,
+      final Set<Ticket> tickets,
+      final ProcessedCharge charge,
+      final CodesGenerator generator) {
+    final Order order = new Order(orderId, confirmationNumber, email, tickets, charge, generator);
     order.recordThat(
         new OrderHasBeenPlaced(
             order.id,
@@ -64,21 +66,25 @@ public final class Order extends AggregateRoot {
   }
 
   private Order(
-      Uuid id,
-      ConfirmationNumber confirmationNumber,
-      Email email,
-      Set<Ticket> tickets,
-      ProcessedCharge charge) {
+      final Uuid id,
+      final ConfirmationNumber confirmationNumber,
+      final Email email,
+      final Set<Ticket> tickets,
+      final ProcessedCharge charge,
+      final CodesGenerator generator) {
     this.id = id;
     this.confirmationNumber = confirmationNumber;
     this.email = email;
-    addTickets(tickets);
+    addTickets(tickets, generator);
     this.total = charge.amount();
     this.cardLast4Digits = charge.cardLast4Digits();
   }
 
-  private void addTickets(Set<Ticket> tickets) {
-    tickets.forEach(ticket -> ticket.setOrder(this));
+  private void addTickets(final Set<Ticket> tickets, final CodesGenerator generator) {
+    final Object[] orderedTickets = tickets.toArray();
+    for (int i = 0; i < orderedTickets.length; i++) {
+      ((Ticket) orderedTickets[i]).claimFor(this, i + 1L, generator);
+    }
     this.tickets = tickets;
   }
 
