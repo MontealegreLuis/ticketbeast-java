@@ -1,5 +1,10 @@
 package com.montealegreluis.ticketbeast.orders;
 
+import static javax.persistence.AccessType.FIELD;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.EAGER;
+import static lombok.AccessLevel.PROTECTED;
+
 import com.montealegreluis.servicebuses.domainevents.AggregateRoot;
 import com.montealegreluis.servicebuses.querybus.Response;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.ConfirmationNumberConverter;
@@ -15,13 +20,14 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.*;
-import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @Table(name = "orders")
-@Access(AccessType.FIELD)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Access(FIELD)
+@NoArgsConstructor(access = PROTECTED)
 public final class Order extends AggregateRoot implements Response {
   @Id
   @EmbeddedId
@@ -46,7 +52,7 @@ public final class Order extends AggregateRoot implements Response {
   @Convert(converter = LastFourDigitsConverter.class)
   private LastFourDigits cardLast4Digits;
 
-  @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "order", fetch = EAGER, cascade = ALL)
   private Set<Ticket> tickets;
 
   public static Order place(

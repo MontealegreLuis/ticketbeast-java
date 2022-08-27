@@ -1,6 +1,7 @@
 package com.montealegreluis.ticketbeast.concerts;
 
 import static javax.persistence.AccessType.FIELD;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -34,7 +35,7 @@ public final class Ticket {
   @JoinColumn(name = "order_id")
   private Order order;
 
-  @ManyToOne(fetch = LAZY, optional = false)
+  @ManyToOne(fetch = EAGER, optional = false)
   @JoinColumn(name = "concert_id", nullable = false)
   private Concert concert;
 
