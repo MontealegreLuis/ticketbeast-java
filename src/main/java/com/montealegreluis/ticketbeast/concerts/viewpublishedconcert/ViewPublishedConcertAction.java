@@ -1,4 +1,4 @@
-package com.montealegreluis.ticketbeast.concerts.actions;
+package com.montealegreluis.ticketbeast.concerts.viewpublishedconcert;
 
 import com.montealegreluis.servicebuses.Query;
 import com.montealegreluis.servicebuses.querybus.QueryHandler;

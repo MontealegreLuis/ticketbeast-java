@@ -1,4 +1,4 @@
-package com.montealegreluis.ticketbeast.concerts.actions;
+package com.montealegreluis.ticketbeast.concerts.viewpublishedconcert;
 
 import static com.montealegreluis.tickebeast.builders.concerts.ConcertBuilder.*;
 import static org.junit.jupiter.api.Assertions.*;
