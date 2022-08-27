@@ -1,4 +1,4 @@
-package com.montealegreluis.ticketbeast.orders.actions;
+package com.montealegreluis.ticketbeast.orders.purchasetickets;
 
 import static com.montealegreluis.tickebeast.builders.concerts.ConcertBuilder.aConcert;
 import static java.time.temporal.ChronoUnit.DAYS;

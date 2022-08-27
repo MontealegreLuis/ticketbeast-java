@@ -1,6 +1,7 @@
 package com.montealegreluis.ticketbeast.orders;
 
 import com.montealegreluis.servicebuses.domainevents.AggregateRoot;
+import com.montealegreluis.servicebuses.querybus.Response;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.ConfirmationNumberConverter;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.EmailConverter;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.LastFourDigitsConverter;
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "orders")
 @Access(AccessType.FIELD)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public final class Order extends AggregateRoot {
+public final class Order extends AggregateRoot implements Response {
   @Id
   @EmbeddedId
   @AttributeOverrides({

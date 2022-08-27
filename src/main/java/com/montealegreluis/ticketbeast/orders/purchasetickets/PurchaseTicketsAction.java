@@ -1,4 +1,4 @@
-package com.montealegreluis.ticketbeast.orders.actions;
+package com.montealegreluis.ticketbeast.orders.purchasetickets;
 
 import com.montealegreluis.servicebuses.Command;
 import com.montealegreluis.servicebuses.commandbus.CommandHandler;
