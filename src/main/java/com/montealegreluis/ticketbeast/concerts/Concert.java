@@ -1,5 +1,8 @@
 package com.montealegreluis.ticketbeast.concerts;
 
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
+
 import com.montealegreluis.servicebuses.domainevents.AggregateRoot;
 import com.montealegreluis.servicebuses.querybus.Response;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.concerts.AdditionalInformationConverter;
@@ -55,7 +58,7 @@ public final class Concert extends AggregateRoot implements Response {
 
   private Date publishedAt;
 
-  @OneToMany(mappedBy = "concert", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "concert", fetch = LAZY, cascade = ALL)
   private Set<Ticket> tickets;
 
   public static Concert draft(
