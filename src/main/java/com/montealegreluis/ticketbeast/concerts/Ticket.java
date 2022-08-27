@@ -14,8 +14,10 @@ import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Entity
 @Table(name = "tickets")
 @Access(FIELD)
