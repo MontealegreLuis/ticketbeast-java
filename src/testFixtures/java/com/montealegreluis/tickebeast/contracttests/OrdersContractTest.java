@@ -17,7 +17,7 @@ public abstract class OrdersContractTest {
     var orders = orders();
     orders.save(order);
 
-    var existingOrder = orders.withId(order.id());
+    var existingOrder = orders.with(order.confirmationNumber());
 
     assertEquals(existingOrder, order);
   }
@@ -25,9 +25,9 @@ public abstract class OrdersContractTest {
   @Test
   void it_fails_to_find_an_unknown_concert() {
     var orders = orders();
-    var unknownOrderId = Value.id();
+    var unknownConfirmationNumber = Value.confirmationNumber();
 
-    assertThrows(UnknownOrder.class, () -> orders.withId(unknownOrderId));
+    assertThrows(UnknownOrder.class, () -> orders.with(unknownConfirmationNumber));
   }
 
   public abstract Orders orders();

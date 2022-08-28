@@ -16,6 +16,6 @@ public final class ViewOrderAction implements QueryHandler<ViewOrderInput, Order
 
   @Override
   public Order execute(ViewOrderInput input) throws UnknownOrder {
-    return orders.withId(input.orderId());
+    return orders.with(input.confirmationNumber());
   }
 }

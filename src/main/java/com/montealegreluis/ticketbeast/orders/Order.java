@@ -99,6 +99,10 @@ public final class Order extends AggregateRoot implements Response {
     return id;
   }
 
+  public ConfirmationNumber confirmationNumber() {
+    return confirmationNumber;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

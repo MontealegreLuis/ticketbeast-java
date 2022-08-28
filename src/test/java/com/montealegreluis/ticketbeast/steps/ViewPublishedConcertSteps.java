@@ -25,8 +25,8 @@ public final class ViewPublishedConcertSteps {
     concerts.save(existingConcert);
   }
 
-  @When("^I try to view its details$")
-  public void i_try_to_view_its_details() {
+  @When("^I try to view the concert details$")
+  public void i_try_to_view_the_concert_details() {
     try {
       concert = action.execute(new ViewPublishedConcertInput(existingConcert.id().value()));
     } catch (UnknownConcert ignore) {
@@ -44,8 +44,8 @@ public final class ViewPublishedConcertSteps {
     concerts.save(existingConcert);
   }
 
-  @Then("^I see no information$")
-  public void i_see_no_information() {
+  @Then("^I see no concert information$")
+  public void i_see_no_concert_information() {
     assertNull(concert);
   }
 

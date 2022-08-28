@@ -1,9 +1,9 @@
 package com.montealegreluis.tickebeast.fakes.orders;
 
+import com.montealegreluis.ticketbeast.orders.ConfirmationNumber;
 import com.montealegreluis.ticketbeast.orders.Order;
 import com.montealegreluis.ticketbeast.orders.Orders;
 import com.montealegreluis.ticketbeast.orders.UnknownOrder;
-import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +15,10 @@ public final class InMemoryOrders implements Orders {
     if (!orders.contains(order)) orders.add(order);
   }
 
-  public Order withId(Uuid orderId) throws UnknownOrder {
+  public Order with(ConfirmationNumber confirmationNumber) throws UnknownOrder {
     return orders.stream()
-        .filter(order -> orderId.equals(order.id()))
+        .filter(order -> confirmationNumber.equals(order.confirmationNumber()))
         .findFirst()
-        .orElseThrow(() -> UnknownOrder.withId(orderId));
+        .orElseThrow(() -> UnknownOrder.with(confirmationNumber));
   }
 }

@@ -24,7 +24,7 @@ final class ViewOrderActionTest {
   void it_finds_an_existing_order() throws NotEnoughTickets, UnknownOrder {
     var order = scenario.withAnOrderWithTickets(2);
     orders.save(order);
-    var input = new ViewOrderInput(order.id().value());
+    var input = new ViewOrderInput(order.confirmationNumber().value());
 
     var existingOrder = action.execute(input);
 

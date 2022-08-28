@@ -1,16 +1,16 @@
 package com.montealegreluis.ticketbeast.orders.vieworder;
 
 import com.montealegreluis.servicebuses.querybus.Query;
-import com.montealegreluis.ticketbeast.shared.Uuid;
+import com.montealegreluis.ticketbeast.orders.ConfirmationNumber;
 
 public class ViewOrderInput implements Query {
-  private final Uuid orderId;
+  private final ConfirmationNumber confirmationNumber;
 
-  public ViewOrderInput(String orderId) {
-    this.orderId = Uuid.withValue(orderId);
+  public ViewOrderInput(String confirmationNumber) {
+    this.confirmationNumber = new ConfirmationNumber(confirmationNumber);
   }
 
-  public Uuid orderId() {
-    return orderId;
+  public ConfirmationNumber confirmationNumber() {
+    return confirmationNumber;
   }
 }
