@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.montealegreluis.servicebuses.domainevents.DomainEvent;
 import com.montealegreluis.tickebeast.builders.Value;
+import com.montealegreluis.ticketbeast.adapters.hashids.HashIdsCodesGenerator;
 import com.montealegreluis.ticketbeast.shared.Uuid;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -88,7 +89,7 @@ final class ConcertTest {
 
     assertThrows(
         NotEnoughTickets.class,
-        () -> concert.reserveTickets(moreTicketsThanAvailable, Value.email()));
+        () -> concert.reserveTickets(moreTicketsThanAvailable, Value.email(), generator));
   }
 
   @Test
@@ -96,13 +97,13 @@ final class ConcertTest {
       throws NotEnoughTickets {
     var concert = aConcert().withTicketsCount(5).build();
     var quantity = new TicketsQuantity(3);
-    concert.reserveTickets(quantity, Value.email());
+    concert.reserveTickets(quantity, Value.email(), generator);
     // only 2 will remain available, after ordering 3 tickets
     var moreTicketsThanAvailable = new TicketsQuantity(3);
 
     assertThrows(
         NotEnoughTickets.class,
-        () -> concert.reserveTickets(moreTicketsThanAvailable, Value.email()));
+        () -> concert.reserveTickets(moreTicketsThanAvailable, Value.email(), generator));
   }
 
   @Test
@@ -120,4 +121,6 @@ final class ConcertTest {
     assertNotEquals(concertA.hashCode(), new Object().hashCode());
     assertNotEquals(concertA.hashCode(), 0);
   }
+
+  private static final CodesGenerator generator = new HashIdsCodesGenerator("a salt");
 }

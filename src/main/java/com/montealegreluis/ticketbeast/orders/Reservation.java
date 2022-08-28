@@ -1,6 +1,5 @@
 package com.montealegreluis.ticketbeast.orders;
 
-import com.montealegreluis.ticketbeast.concerts.CodesGenerator;
 import com.montealegreluis.ticketbeast.concerts.Money;
 import com.montealegreluis.ticketbeast.concerts.Ticket;
 import com.montealegreluis.ticketbeast.payments.ProcessedCharge;
@@ -35,8 +34,7 @@ public final class Reservation {
   public Order complete(
       final Uuid orderId,
       final ConfirmationNumber confirmationNumber,
-      final ProcessedCharge charge,
-      final CodesGenerator generator) {
-    return Order.place(orderId, confirmationNumber, email, tickets, charge, generator);
+      final ProcessedCharge charge) {
+    return Order.place(orderId, confirmationNumber, email, tickets, charge);
   }
 }

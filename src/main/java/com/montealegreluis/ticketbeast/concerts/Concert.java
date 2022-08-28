@@ -134,7 +134,9 @@ public final class Concert extends AggregateRoot implements Response {
     return ticketPrice.multiply(quantity);
   }
 
-  public Reservation reserveTickets(TicketsQuantity quantity, Email email) throws NotEnoughTickets {
+  public Reservation reserveTickets(
+      final TicketsQuantity quantity, final Email email, final CodesGenerator generator)
+      throws NotEnoughTickets {
     final List<Ticket> availableTickets =
         tickets.stream().filter(Ticket::isAvailable).collect(Collectors.toList());
 
@@ -144,6 +146,12 @@ public final class Concert extends AggregateRoot implements Response {
 
     final Set<Ticket> reservedTickets =
         availableTickets.stream().skip(0).limit(quantity.value()).collect(Collectors.toSet());
+
+    final int offset = tickets.size() - availableTickets.size();
+    final Object[] claimedTickets = reservedTickets.toArray();
+    for (int i = 0; i < reservedTickets.size(); i++) {
+      ((Ticket) claimedTickets[i]).assignCode(offset + 1L + i, generator);
+    }
 
     return new Reservation(reservedTickets, email);
   }

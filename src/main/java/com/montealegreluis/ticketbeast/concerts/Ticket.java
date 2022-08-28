@@ -52,8 +52,11 @@ public final class Ticket {
     this.concert = concert;
   }
 
-  public void claimFor(final Order order, final Long ticketNumber, final CodesGenerator generator) {
+  public void claimFor(final Order order) {
     this.order = order;
+  }
+
+  public void assignCode(final Long ticketNumber, final CodesGenerator generator) {
     this.code = generator.generateCodeFor(ticketNumber);
   }
 

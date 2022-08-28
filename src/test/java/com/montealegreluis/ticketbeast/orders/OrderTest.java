@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.montealegreluis.tickebeast.builders.Value;
 import com.montealegreluis.ticketbeast.adapters.hashids.HashIdsCodesGenerator;
+import com.montealegreluis.ticketbeast.concerts.CodesGenerator;
 import com.montealegreluis.ticketbeast.concerts.NotEnoughTickets;
 import com.montealegreluis.ticketbeast.concerts.TicketsQuantity;
 import com.montealegreluis.ticketbeast.payments.LastFourDigits;
@@ -20,11 +21,10 @@ final class OrderTest {
     var email = Value.email();
     var concert = aConcert().withTicketsCount(2).build();
     var quantity = new TicketsQuantity(2);
-    var reservation = concert.reserveTickets(quantity, email);
+    var reservation = concert.reserveTickets(quantity, email, generator);
     var confirmationNumber = Value.confirmationNumber();
     var charge = new ProcessedCharge(reservation.total(), new LastFourDigits("4242"));
-    var order =
-        reservation.complete(id, confirmationNumber, charge, new HashIdsCodesGenerator("a salt"));
+    var order = reservation.complete(id, confirmationNumber, charge);
 
     assertNotNull(order);
     assertEquals(id, order.id());
@@ -40,24 +40,22 @@ final class OrderTest {
     var quantity = new TicketsQuantity(2);
     var concertA =
         aConcert().withId("a6609f9a-85fa-43b9-898c-bd3b34c87191").withTicketsCount(2).build();
-    var reservationA = concertA.reserveTickets(quantity, Value.email());
+    var reservationA = concertA.reserveTickets(quantity, Value.email(), generator);
     var chargeA = new ProcessedCharge(reservationA.total(), new LastFourDigits("4242"));
     var orderA =
         reservationA.complete(
             Uuid.withValue("76f3fe0d-4003-4fc4-803a-8801ee804bed"),
             Value.confirmationNumber(),
-            chargeA,
-            generator);
+            chargeA);
     var concertB =
         aConcert().withId("9101c9a0-0b8f-4dc1-8600-b4881963803f").withTicketsCount(2).build();
-    var reservationB = concertB.reserveTickets(quantity, Value.email());
+    var reservationB = concertB.reserveTickets(quantity, Value.email(), generator);
     var chargeB = new ProcessedCharge(reservationA.total(), new LastFourDigits("2727"));
     var orderB =
         reservationB.complete(
             Uuid.withValue("46425d62-f0ef-465c-930b-0124d98079aa"),
             Value.confirmationNumber(),
-            chargeB,
-            generator);
+            chargeB);
 
     assertEquals(orderA, orderA);
     assertNotEquals(orderA, null);
@@ -66,4 +64,6 @@ final class OrderTest {
     assertNotEquals(orderA.hashCode(), new Object().hashCode());
     assertNotEquals(orderA.hashCode(), 0);
   }
+
+  private static final CodesGenerator generator = new HashIdsCodesGenerator("a salt");
 }

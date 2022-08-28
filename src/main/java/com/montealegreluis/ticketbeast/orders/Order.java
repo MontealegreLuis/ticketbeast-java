@@ -10,7 +10,6 @@ import com.montealegreluis.servicebuses.querybus.Response;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.ConfirmationNumberConverter;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.EmailConverter;
 import com.montealegreluis.ticketbeast.adapters.jpa.converters.orders.LastFourDigitsConverter;
-import com.montealegreluis.ticketbeast.concerts.CodesGenerator;
 import com.montealegreluis.ticketbeast.concerts.Money;
 import com.montealegreluis.ticketbeast.concerts.Ticket;
 import com.montealegreluis.ticketbeast.payments.LastFourDigits;
@@ -60,9 +59,8 @@ public final class Order extends AggregateRoot implements Response {
       final ConfirmationNumber confirmationNumber,
       final Email email,
       final Set<Ticket> tickets,
-      final ProcessedCharge charge,
-      final CodesGenerator generator) {
-    final Order order = new Order(orderId, confirmationNumber, email, tickets, charge, generator);
+      final ProcessedCharge charge) {
+    final Order order = new Order(orderId, confirmationNumber, email, tickets, charge);
     order.recordThat(
         new OrderHasBeenPlaced(
             order.id,
@@ -77,21 +75,17 @@ public final class Order extends AggregateRoot implements Response {
       final ConfirmationNumber confirmationNumber,
       final Email email,
       final Set<Ticket> tickets,
-      final ProcessedCharge charge,
-      final CodesGenerator generator) {
+      final ProcessedCharge charge) {
     this.id = id;
     this.confirmationNumber = confirmationNumber;
     this.email = email;
-    addTickets(tickets, generator);
+    addTickets(tickets);
     this.total = charge.amount();
     this.cardLast4Digits = charge.cardLast4Digits();
   }
 
-  private void addTickets(final Set<Ticket> tickets, final CodesGenerator generator) {
-    final Object[] orderedTickets = tickets.toArray();
-    for (int i = 0; i < orderedTickets.length; i++) {
-      ((Ticket) orderedTickets[i]).claimFor(this, i + 1L, generator);
-    }
+  private void addTickets(final Set<Ticket> tickets) {
+    tickets.forEach(orderedTicket -> orderedTicket.claimFor(this));
     this.tickets = tickets;
   }
 

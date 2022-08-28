@@ -24,27 +24,25 @@ public class OrdersFixture {
   public Order withAnOrderWithTickets(int ticketsCount) throws NotEnoughTickets {
     var quantity = new TicketsQuantity(ticketsCount);
     var concert = withAConcertWithTickets(ticketsCount);
-    var reservation = concert.reserveTickets(quantity, Value.email());
+    var reservation = concert.reserveTickets(quantity, Value.email(), generator);
 
     return reservation.complete(
         Value.id(),
         Value.confirmationNumber(),
-        new ProcessedCharge(reservation.total(), new LastFourDigits("4242")),
-        generator);
+        new ProcessedCharge(reservation.total(), new LastFourDigits("4242")));
   }
 
   public Order withAnOrderWithConfirmationNumber(String aConfirmationNumber)
       throws NotEnoughTickets {
     var quantity = new TicketsQuantity(2);
     var concert = withAConcertWithTickets(quantity.value());
-    var reservation = concert.reserveTickets(quantity, Value.email());
+    var reservation = concert.reserveTickets(quantity, Value.email(), generator);
     var confirmationNumber = new ConfirmationNumber(aConfirmationNumber);
 
     return reservation.complete(
         Value.id(),
         confirmationNumber,
-        new ProcessedCharge(reservation.total(), new LastFourDigits("4242")),
-        generator);
+        new ProcessedCharge(reservation.total(), new LastFourDigits("4242")));
   }
 
   private Concert withAConcertWithTickets(int ticketsCount) {
